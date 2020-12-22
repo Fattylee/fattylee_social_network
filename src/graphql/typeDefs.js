@@ -8,7 +8,11 @@ export default gql`
     email: String!
   }
   type Post {
+    id: ID!
     body: String!
+    username: String!
+    createdAt: String!
+    updatedAt: String!
   }
   type User {
     id: ID!
@@ -18,13 +22,16 @@ export default gql`
     createdAt: String!
     updatedAt: String!
   }
+
   type Query {
     hello: String!
-    getPosts: [Post]
+    getPosts: [Post]!
     user(username: String!): User
   }
   type Mutation {
     register(data: registerInput!): User!
     login(username: String!, password: String!): User!
+    createPost(body: String!): Post!
+    deletePost(postId: String!): String!
   }
 `;

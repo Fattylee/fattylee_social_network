@@ -10,26 +10,39 @@ import {
 
 const { MY_SECRET } = config;
 const { UserInputError } = apolloServer;
-const { hash } = bcrypt;
+const { hash, compare } = bcrypt;
 const { sign } = jwt;
 
+const generateToken = (user) => {
+  const payload = { id: user._id, username: user.username, email: user.email };
+
+  return sign(payload, MY_SECRET, { expiresIn: "1h" });
+};
 export const userResolver = {
   Mutation: {
     async login(parent, args, { User }, info) {
-      const { errors, isValid } = validateLoginData(args);
-      if (!isValid) throw new UserInputError("Errors", { errors });
+      const value = validateLoginData(args);
 
       const { username, password } = args;
       let user = await User.findOne({ username });
+      if (!user) throw new Error("User not found");
+
+      const isValidPassword = await compare(password, user.password);
+      if (!isValidPassword)
+        throw new apolloServer.AuthenticationError("Invalid credentials");
+
+      return {
+        id: user.id,
+        ...user._doc,
+        token: generateToken(user),
+      };
     },
     async register(parent, args, { User }, info) {
-      const { errors, isValid } = validateRegisterData(args.data);
-      if (!isValid) throw new UserInputError("Errors", { errors });
+      validateRegisterData(args.data);
 
-      const { username, password, confirm_password, email } = args.data;
-      let user = await User.findOne({ username });
+      const { username, password, email } = args.data;
+      let user = await User.findOne({ $or: [{ username }, { email }] });
 
-      console.log(user, "=======found========");
       if (user)
         throw new UserInputError("Conflict", {
           errors: {
@@ -41,13 +54,10 @@ export const userResolver = {
       user.password = await hash(password, 12);
       user = await user.save();
 
-      const payload = { id: user._id, username, email };
-      const token = sign(payload, MY_SECRET, { expiresIn: "1h" });
-
       return {
         id: user.id,
         ...user._doc,
-        token,
+        token: generateToken(user),
       };
     },
   },
