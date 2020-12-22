@@ -39,5 +39,22 @@ export const postResolver = {
 
       return "Post deleted successfully";
     },
+    async likePost(_, { postId }, ctx) {
+      validatePostDeleteData({ postId });
+      const user = authChecker(ctx);
+
+      const post = await ctx.Post.findById(postId);
+
+      if (!post) throw new apolloServer.UserInputError("Post not found");
+
+      const like = post.likes.find((like) => like.username === user.username);
+
+      if (like) {
+        like.remove();
+      } else {
+        post.likes.unshift({ username: user.username });
+      }
+      return post.save();
+    },
   },
 };
