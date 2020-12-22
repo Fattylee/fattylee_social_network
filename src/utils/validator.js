@@ -97,7 +97,7 @@ export const validateCommentDeleteData = (data) => {
       .required(),
     commentId: Joi.string()
       .pattern(/[0-9a-f]{24}/)
-      .message("Invalid post id")
+      .message("Invalid comment id")
       .required(),
   }).validate(data, validateOption);
 

@@ -26,19 +26,16 @@ export const commentResolver = {
 
       if (!post) throw new apolloServer.UserInputError("Post not found");
 
-      const updated = await ctx.Post.findByIdAndUpdate(
-        postId,
-        {
-          $pull: {
-            comments: {
-              _id: commentId,
-            },
-          },
-        },
-        { new: true }
-      );
+      const comment = post.comments.find((cm) => cm._id == commentId);
 
-      console.log(updated);
+      if (!comment) throw new apolloServer.UserInputError("Comment not found");
+
+      if (comment.username !== user.username)
+        throw new apolloServer.AuthenticationError("Action not allowed");
+
+      comment.remove();
+      await post.save();
+
       return "Deleted comment successfully";
     },
   },
