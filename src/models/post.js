@@ -11,7 +11,7 @@ const postSchema = Schema(
     },
     comments: [
       {
-        text: String,
+        body: String,
         username: {
           type: String,
           lowercase: true,

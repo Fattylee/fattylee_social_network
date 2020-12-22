@@ -1,0 +1,46 @@
+import apolloServer from "apollo-server";
+
+import { authChecker } from "../../utils/authChecker.js";
+import {
+  validateCommentData,
+  validateCommentDeleteData,
+} from "../../utils/validator.js";
+
+export const commentResolver = {
+  Mutation: {
+    async createComment(_, { postId, body }, ctx) {
+      validateCommentData({ body, postId });
+
+      const { username } = authChecker(ctx);
+      const post = await ctx.Post.findById(postId);
+
+      if (!post) throw new apolloServer.UserInputError("Post not found");
+
+      post.comments.unshift({ body, username });
+      return post.save();
+    },
+    async deleteComment(_, { postId, commentId }, ctx) {
+      validateCommentDeleteData({ commentId, postId });
+      const user = authChecker(ctx);
+      const post = await ctx.Post.findById(postId);
+
+      if (!post) throw new apolloServer.UserInputError("Post not found");
+
+      const updated = await ctx.Post.findByIdAndUpdate(
+        postId,
+        {
+          $pull: {
+            comments: {
+              _id: commentId,
+            },
+          },
+        },
+        { new: true }
+      );
+
+      console.log(updated);
+      return "Deleted comment successfully";
+    },
+  },
+  Query: {},
+};

@@ -71,3 +71,40 @@ export const validatePostDeleteData = (data) => {
 
   return value;
 };
+
+export const validateCommentData = (data) => {
+  const { error, value } = Joi.object({
+    postId: Joi.string()
+      .pattern(/[0-9a-f]{24}/)
+      .message("Invalid post id")
+      .required(),
+    body: Joi.string().min(3).required(),
+  }).validate(data, validateOption);
+
+  if (error)
+    throw new apolloServer.UserInputError("Errors", {
+      errors: formatError(error),
+    });
+
+  return value;
+};
+
+export const validateCommentDeleteData = (data) => {
+  const { error, value } = Joi.object({
+    postId: Joi.string()
+      .pattern(/[0-9a-f]{24}/)
+      .message("Invalid post id")
+      .required(),
+    commentId: Joi.string()
+      .pattern(/[0-9a-f]{24}/)
+      .message("Invalid post id")
+      .required(),
+  }).validate(data, validateOption);
+
+  if (error)
+    throw new apolloServer.UserInputError("Errors", {
+      errors: formatError(error),
+    });
+
+  return value;
+};
