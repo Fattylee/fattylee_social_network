@@ -19,6 +19,8 @@ export default gql`
     username: String!
     comments: [Comment]!
     likes: [Like]!
+    commentCount: Int!
+    likeCount: Int!
     createdAt: String!
     updatedAt: String!
   }

@@ -3,6 +3,14 @@ import { postResolver } from "./post.js";
 import { userResolver } from "./user.js";
 
 export default {
+  Post: {
+    likeCount(parent) {
+      return parent.likes.length;
+    },
+    commentCount(parent) {
+      return parent.comments.length;
+    },
+  },
   Query: {
     ...userResolver.Query,
     ...postResolver.Query,
