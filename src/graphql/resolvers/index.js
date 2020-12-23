@@ -12,8 +12,11 @@ export default {
     commentCount(parent) {
       return parent.comments.length;
     },
-    async author(parent, _, { User }) {
+    author(parent, _, { User }) {
       return User.findById(parent.user);
+    },
+    createdAt(parent) {
+      return parent.createdAt.toISOString();
     },
   },
   User: {
