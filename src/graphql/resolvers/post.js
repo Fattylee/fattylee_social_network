@@ -10,7 +10,6 @@ export const postResolver = {
     getPosts(parent, args, ctx, info) {
       return ctx.Post.find().sort({ createdAt: -1 });
     },
-    hello: () => "Hello, world!",
   },
   Mutation: {
     createPost(_, { body }, ctx) {
@@ -18,7 +17,7 @@ export const postResolver = {
 
       const user = authChecker(ctx);
 
-      return ctx.Post.create({ body, username: user.username });
+      return ctx.Post.create({ body, username: user.username, user: user.id });
     },
     async deletePost(_, { postId }, ctx) {
       validatePostDeleteData({ postId });

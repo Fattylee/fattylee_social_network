@@ -23,6 +23,7 @@ export default gql`
     likeCount: Int!
     createdAt: String!
     updatedAt: String!
+    author: User!
   }
   type Like {
     id: ID!
@@ -33,19 +34,27 @@ export default gql`
     id: ID!
     username: String!
     email: String!
+    createdAt: String!
+    updatedAt: String!
+    posts: [Post]!
+    postCount: Int!
+  }
+  type UserPayload {
+    id: ID!
+    username: String!
+    email: String!
     token: String!
     createdAt: String!
     updatedAt: String!
   }
 
   type Query {
-    hello: String!
+    me: User!
     getPosts: [Post]!
-    user(username: String!): User
   }
   type Mutation {
-    register(data: registerInput!): User!
-    login(username: String!, password: String!): User!
+    register(data: registerInput!): UserPayload!
+    login(username: String!, password: String!): UserPayload!
     createPost(body: String!): Post!
     deletePost(postId: String!): String!
     createComment(postId: String!, body: String!): Post!
