@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Button, Form, Grid, Header, Icon, Message } from "semantic-ui-react";
+import { Form, Grid, Header, Icon, Message } from "semantic-ui-react";
 
 export const Login = () => {
   const [{ password, username }, setInput] = useState({
