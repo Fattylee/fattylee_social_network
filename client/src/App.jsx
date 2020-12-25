@@ -1,5 +1,10 @@
 import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Redirect,
+  Route,
+  Switch,
+} from "react-router-dom";
 import { Container } from "semantic-ui-react";
 
 import { Header } from "./components/Header";
@@ -18,9 +23,12 @@ const App = () => {
       <Router>
         <Container>
           <Header />
-          <Route exact path="/" component={Home} />
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/register" component={Register} />
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/register" component={Register} />
+            <Redirect to="/login" />
+          </Switch>
         </Container>
       </Router>
     </ApolloProvider>
