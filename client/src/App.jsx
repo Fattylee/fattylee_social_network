@@ -1,4 +1,5 @@
 import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
+import { createContext, useState } from "react";
 import {
   BrowserRouter as Router,
   Redirect,
@@ -17,21 +18,28 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
+const initialState = { isAuthenticated: false, user: null };
+
+export const AuthContext = createContext();
+
 const App = () => {
+  const [auth, setAuth] = useState(initialState);
   return (
-    <ApolloProvider client={client}>
-      <Router>
-        <Container>
-          <Header />
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/register" component={Register} />
-            <Redirect to="/login" />
-          </Switch>
-        </Container>
-      </Router>
-    </ApolloProvider>
+    <AuthContext.Provider value={{ auth, setAuth }}>
+      <ApolloProvider client={client}>
+        <Router>
+          <Container>
+            <Header />
+            <Switch>
+              <Route exact path="/" component={Home} />
+              <Route exact path="/login" component={Login} />
+              <Route exact path="/register" component={Register} />
+              <Redirect to="/login" />
+            </Switch>
+          </Container>
+        </Router>
+      </ApolloProvider>
+    </AuthContext.Provider>
   );
 };
 

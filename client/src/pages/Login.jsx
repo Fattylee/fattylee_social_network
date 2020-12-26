@@ -1,7 +1,8 @@
 import { gql, useMutation } from "@apollo/client";
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Card, Form, Grid, Header, Message } from "semantic-ui-react";
+import { AuthContext } from "../App";
 import { useForm } from "../utils/hoks";
 
 const initialValue = {
@@ -21,10 +22,13 @@ export const Login = (props) => {
     handleInput,
   } = useForm(initialValue, handleRegisterUser);
 
-  const [loginUser, { loading }] = useMutation(LOGIN, {
+  const { setAuth } = useContext(AuthContext);
+  const [loginAction, { loading }] = useMutation(LOGIN, {
     update(_, result) {
       setError({});
       setValue(initialValue);
+      const user = result.data.login;
+      setAuth({ isAuthenticated: true, user });
       setTimeout(() => {
         props.history.push("/");
       }, 200);
@@ -36,7 +40,7 @@ export const Login = (props) => {
   });
 
   function handleRegisterUser() {
-    loginUser();
+    loginAction();
   }
   return (
     <div>
@@ -103,6 +107,7 @@ const LOGIN = gql`
     login(username: $username, password: $password) {
       id
       username
+      email
       token
       createdAt
     }
