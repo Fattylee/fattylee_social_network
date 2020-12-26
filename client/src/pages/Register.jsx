@@ -1,7 +1,8 @@
 import { gql, useMutation } from "@apollo/client";
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { Card, Form, Grid, Header, Message } from "semantic-ui-react";
+import { useForm } from "../utils/hoks";
 
 const initialValue = {
   username: "",
@@ -11,8 +12,14 @@ const initialValue = {
 };
 
 export const Register = (props) => {
-  const [error, setError] = useState({});
-  const [value, setValue] = useState(initialValue);
+  const {
+    error,
+    setError,
+    value,
+    setValue,
+    handleSubmit,
+    handleInput,
+  } = useForm(initialValue, handleRegisterUser);
 
   const [registerUser, { loading }] = useMutation(REGISTER, {
     update(_, result) {
@@ -28,15 +35,9 @@ export const Register = (props) => {
     variables: value,
   });
 
-  const handleInput = (e, { name, value }) => {
-    setValue((prevSate) => ({ ...prevSate, [name]: value }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  function handleRegisterUser() {
     registerUser();
-  };
-
+  }
   return (
     <div>
       <Grid verticalAlign="middle" style={{ height: "70vh" }}>

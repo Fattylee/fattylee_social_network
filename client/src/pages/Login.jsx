@@ -1,89 +1,110 @@
-import React, { useState } from "react";
+import { gql, useMutation } from "@apollo/client";
+import React from "react";
 import { Link } from "react-router-dom";
-import { Form, Grid, Header, Icon, Message } from "semantic-ui-react";
+import { Card, Form, Grid, Header, Message } from "semantic-ui-react";
+import { useForm } from "../utils/hoks";
 
-export const Login = () => {
-  const [{ password, username }, setInput] = useState({
-    username: "",
-    password: "pass",
+const initialValue = {
+  username: "",
+  password: "",
+  confirm_password: "",
+  email: "",
+};
+
+export const Login = (props) => {
+  const {
+    error,
+    setError,
+    value,
+    setValue,
+    handleSubmit,
+    handleInput,
+  } = useForm(initialValue, handleRegisterUser);
+
+  const [loginUser, { loading }] = useMutation(LOGIN, {
+    update(_, result) {
+      setError({});
+      setValue(initialValue);
+      setTimeout(() => {
+        props.history.push("/");
+      }, 200);
+    },
+    onError(error) {
+      setError(error.graphQLErrors[0].extensions.errors);
+    },
+    variables: value,
   });
-  const handleChange = (e, { name, value }) => {
-    setInput((prev) => ({ ...prev, [name]: value }));
-    console.log(username);
-    console.log(password);
-  };
 
+  function handleRegisterUser() {
+    loginUser();
+  }
   return (
-    <Grid
-      textAlign="center"
-      verticalAlign="middle"
-      style={{ background: "white", height: "90vh" }}
-    >
-      <Grid.Column>
-        <Header
-          as="h2"
-          textAlign="center"
-          content="Sign in to your account"
-          // image="/assets/img/sarah.jpg"
-          color="purple"
-          style={{ marginBottom: 32 }}
-          icon={{ position: "right", name: "apple", color: "teal" }}
-          // iconPosition="right"
-        />
-        <Form
-          size="big"
-          loading={false}
-          inverted={false}
-          success
-          error
-          onSubmit={(e, ob) => {
-            console.log(ob);
-            console.log(username, password);
-          }}
-        >
-          <Message header="succesful" content="Welcome to the family" />
-          <Form.Input placeholder="enterhe" icon="mail" iconPosition="left" />
+    <div>
+      <Grid verticalAlign="middle" style={{ height: "70vh" }}>
+        <Grid.Column>
+          <Card raised fluid style={{ maxWidth: 700, margin: "auto" }}>
+            <Card.Content>
+              <Header
+                textAlign="center"
+                content="Login to Account"
+                image="assets/img/sarah.jpg"
+              />
 
-          <Form.Input
-            error
-            label="Enter password"
-            labelPosition="left"
-            fluid
-            placeholder="Your password"
-            icon="lock"
-            type="password"
-          />
-          <Form.Group widths="equal">
-            <Form.Input
-              fluid
-              icon="user"
-              iconPosition="left"
-              placeholder="First name"
-              name="username"
-              value={username}
-              onChange={handleChange}
-            />
-            <Form.Input
-              fluid
-              icon="user"
-              iconPosition="left"
-              placeholder="Last name"
-            />
-          </Form.Group>
-          <Form.Button
-            content="Submit"
-            size="large"
-            icon="hand point right"
-            fluid
-            color="green"
-            style={{ marginBottom: 37 }}
-          />
-        </Form>
-        <p>
-          Not a member? <Link to="/register">Sign up now</Link>
-        </p>
-        <Icon name="hand point right" size="massive" />
-      </Grid.Column>
-    </Grid>
+              <Form
+                autoComplete="true"
+                onSubmit={handleSubmit}
+                noValidate
+                loading={loading}
+                success={false}
+                error={!!Object.keys(error).length}
+                size="big"
+              >
+                <Message success header="Success" content="Login successful" />
+
+                <Form.Input
+                  type="text"
+                  name="username"
+                  placeholder="Your username"
+                  icon="user"
+                  error={error.username}
+                  value={value.username}
+                  onChange={handleInput}
+                  label="Username"
+                  required={!!error.username}
+                />
+                <Form.Input
+                  type="password"
+                  name="password"
+                  placeholder="Your password"
+                  icon="lock"
+                  error={error.password}
+                  value={value.password}
+                  onChange={handleInput}
+                  label="Password"
+                  required={!!error.password}
+                />
+                <Form.Button content="Login" fluid size="large" color="green" />
+
+                <Message error header="Fixs all errors" content={error.error} />
+              </Form>
+              <p style={{ marginTop: 30, textAlign: "center" }}>
+                Not a member? <Link to="/register">Sign up now</Link>
+              </p>
+            </Card.Content>
+          </Card>
+        </Grid.Column>
+      </Grid>
+    </div>
   );
 };
+
+const LOGIN = gql`
+  mutation loginAccount($username: String!, $password: String!) {
+    login(username: $username, password: $password) {
+      id
+      username
+      token
+      createdAt
+    }
+  }
+`;
