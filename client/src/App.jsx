@@ -1,5 +1,4 @@
 import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
-import { createContext, useState } from "react";
 import {
   BrowserRouter as Router,
   Redirect,
@@ -9,8 +8,12 @@ import {
 import { Container } from "semantic-ui-react";
 
 import { Header } from "./components/Header";
+import { AuthProvider } from "./context/auth";
+import { AuthRoute } from "./context/AuthRoute";
+import { ProtectedRoute } from "./context/ProtectedRoute";
 import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
+import { NotFound } from "./pages/NotFound";
 import { Register } from "./pages/Register";
 
 const client = new ApolloClient({
@@ -18,28 +21,24 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-const initialState = { isAuthenticated: false, user: null };
-
-export const AuthContext = createContext();
-
 const App = () => {
-  const [auth, setAuth] = useState(initialState);
   return (
-    <AuthContext.Provider value={{ auth, setAuth }}>
+    <AuthProvider>
       <ApolloProvider client={client}>
         <Router>
           <Container>
             <Header />
             <Switch>
               <Route exact path="/" component={Home} />
-              <Route exact path="/login" component={Login} />
-              <Route exact path="/register" component={Register} />
-              <Redirect to="/login" />
+              <ProtectedRoute exact path="/posts" component={Home} />
+              <AuthRoute exact path="/login" component={Login} />
+              <AuthRoute exact path="/register" component={Register} />
+              <Route component={NotFound} />
             </Switch>
           </Container>
         </Router>
       </ApolloProvider>
-    </AuthContext.Provider>
+    </AuthProvider>
   );
 };
 

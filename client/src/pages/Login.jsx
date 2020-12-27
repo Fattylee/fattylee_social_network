@@ -2,7 +2,8 @@ import { gql, useMutation } from "@apollo/client";
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Card, Form, Grid, Header, Message } from "semantic-ui-react";
-import { AuthContext } from "../App";
+import { AuthContext } from "../context/auth";
+
 import { useForm } from "../utils/hoks";
 
 const initialValue = {
@@ -22,19 +23,20 @@ export const Login = (props) => {
     handleInput,
   } = useForm(initialValue, handleRegisterUser);
 
-  const { setAuth } = useContext(AuthContext);
+  const context = useContext(AuthContext);
   const [loginAction, { loading }] = useMutation(LOGIN, {
     update(_, result) {
       setError({});
       setValue(initialValue);
       const user = result.data.login;
-      setAuth({ isAuthenticated: true, user });
-      setTimeout(() => {
-        props.history.push("/");
-      }, 200);
+      context.login(user);
+      props.history.push("/");
     },
     onError(error) {
-      setError(error.graphQLErrors[0].extensions.errors);
+      if (error.graphQLErrors[0].extensions.code === "BAD_USER_INPUT") {
+        return setError(error.graphQLErrors[0].extensions.errors);
+      }
+      setError({ error: error.graphQLErrors[0].message });
     },
     variables: value,
   });
@@ -89,7 +91,7 @@ export const Login = (props) => {
                 />
                 <Form.Button content="Login" fluid size="large" color="green" />
 
-                <Message error header="Fixs all errors" content={error.error} />
+                <Message error header="Fix all errors" content={error.error} />
               </Form>
               <p style={{ marginTop: 30, textAlign: "center" }}>
                 Not a member? <Link to="/register">Sign up now</Link>

@@ -1,7 +1,8 @@
 import { gql, useMutation } from "@apollo/client";
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Card, Form, Grid, Header, Message } from "semantic-ui-react";
+import { AuthContext } from "../context/auth";
 import { useForm } from "../utils/hoks";
 
 const initialValue = {
@@ -12,6 +13,7 @@ const initialValue = {
 };
 
 export const Register = (props) => {
+  const context = useContext(AuthContext);
   const {
     error,
     setError,
@@ -22,15 +24,17 @@ export const Register = (props) => {
   } = useForm(initialValue, handleRegisterUser);
 
   const [registerUser, { loading }] = useMutation(REGISTER, {
-    update(_, result) {
+    update(_, { data: { register: userData } }) {
       setError({});
       setValue(initialValue);
-      setTimeout(() => {
-        props.history.push("/");
-      }, 200);
+      props.history.push("/");
+      context.login(userData);
     },
-    onError(error) {
-      setError(error.graphQLErrors[0].extensions.errors);
+    onError({ graphQLErrors: [err] }) {
+      if (err.extensions.code === "BAD_USER_INPUT")
+        return setError(err.extensions.errors);
+
+      setError({ error: err.message });
     },
     variables: value,
   });
@@ -114,7 +118,7 @@ export const Register = (props) => {
                   color="green"
                 />
 
-                <Message error header="Fixs all errors" content={error.error} />
+                <Message error header="Fix all errors" content={error.error} />
               </Form>
 
               <p style={{ marginTop: 30, textAlign: "center" }}>
@@ -146,6 +150,7 @@ const REGISTER = gql`
     ) {
       id
       username
+      email
       token
     }
   }
