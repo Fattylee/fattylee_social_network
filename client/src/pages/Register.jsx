@@ -1,9 +1,10 @@
 import { gql, useMutation } from "@apollo/client";
+// import { setContext } from "apollo-link-context";
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Card, Form, Grid, Header, Message } from "semantic-ui-react";
 import { AuthContext } from "../context/auth";
-import { useForm } from "../utils/hoks";
+import { useForm } from "../utils/hooks";
 
 const initialValue = {
   username: "",
@@ -37,6 +38,7 @@ export const Register = (props) => {
       setError({ error: err.message });
     },
     variables: value,
+    // refetchQueries: [{query}],
   });
 
   function handleRegisterUser() {

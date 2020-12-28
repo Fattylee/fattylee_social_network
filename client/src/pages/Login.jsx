@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 import { Card, Form, Grid, Header, Message } from "semantic-ui-react";
 import { AuthContext } from "../context/auth";
 
-import { useForm } from "../utils/hoks";
+import { useForm } from "../utils/hooks";
+import { Layout } from "./Layout";
 
 const initialValue = {
   username: "",
@@ -46,6 +47,7 @@ export const Login = (props) => {
   }
   return (
     <div>
+      {/* <Layout></Layout> */}
       <Grid verticalAlign="middle" style={{ height: "70vh" }}>
         <Grid.Column>
           <Card raised fluid style={{ maxWidth: 700, margin: "auto" }}>

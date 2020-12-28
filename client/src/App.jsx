@@ -1,10 +1,4 @@
-import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
-import {
-  BrowserRouter as Router,
-  Redirect,
-  Route,
-  Switch,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Container } from "semantic-ui-react";
 
 import { Header } from "./components/Header";
@@ -15,16 +9,12 @@ import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
 import { NotFound } from "./pages/NotFound";
 import { Register } from "./pages/Register";
-
-const client = new ApolloClient({
-  uri: "http://localhost:5000",
-  cache: new InMemoryCache(),
-});
+import ApolloProvider from "./utils/apollo";
 
 const App = () => {
   return (
     <AuthProvider>
-      <ApolloProvider client={client}>
+      <ApolloProvider>
         <Router>
           <Container>
             <Header />

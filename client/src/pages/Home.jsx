@@ -2,6 +2,7 @@ import { gql, useQuery } from "@apollo/client";
 import React from "react";
 import { Grid, Loader } from "semantic-ui-react";
 import { Post } from "../components/Post";
+import { PostForm } from "./PostForm";
 
 export const Home = () => {
   const { loading, data: { getPosts: posts } = {}, error } = useQuery(
@@ -16,6 +17,9 @@ export const Home = () => {
       </Grid.Row>
 
       <Grid.Row>
+        <Grid.Column>
+          <PostForm />
+        </Grid.Column>
         {loading ? (
           <Loader active size="massive"></Loader>
         ) : posts?.length ? (
@@ -32,7 +36,7 @@ export const Home = () => {
   );
 };
 
-const FETCH_POSTS = gql`
+export const FETCH_POSTS = gql`
   query getPost {
     getPosts {
       id

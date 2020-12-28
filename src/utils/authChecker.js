@@ -6,7 +6,7 @@ export const authChecker = (context) => {
   const authHeader = context.req.headers.authorization;
 
   if (!authHeader)
-    throw new apolloServer.UserInputError(
+    throw new apolloServer.AuthenticationError(
       "Authorization header must be provided"
     );
 
