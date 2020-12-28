@@ -8,11 +8,13 @@ import {
 export const postResolver = {
   Query: {
     getPosts(parent, args, ctx, info) {
+      console.log("getPost");
       return ctx.Post.find().sort({ createdAt: -1 });
     },
   },
   Mutation: {
     createPost(_, { body }, ctx) {
+      console.log("createPost");
       validatePostData({ body });
 
       const user = authChecker(ctx);

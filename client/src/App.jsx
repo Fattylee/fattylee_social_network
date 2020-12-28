@@ -13,8 +13,8 @@ import ApolloProvider from "./utils/apollo";
 
 const App = () => {
   return (
-    <AuthProvider>
-      <ApolloProvider>
+    <ApolloProvider>
+      <AuthProvider>
         <Router>
           <Container>
             <Header />
@@ -27,8 +27,8 @@ const App = () => {
             </Switch>
           </Container>
         </Router>
-      </ApolloProvider>
-    </AuthProvider>
+      </AuthProvider>
+    </ApolloProvider>
   );
 };
 

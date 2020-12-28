@@ -1,10 +1,12 @@
 import { gql, useQuery } from "@apollo/client";
-import React from "react";
+import React, { useContext } from "react";
 import { Grid, Loader } from "semantic-ui-react";
 import { Post } from "../components/Post";
+import { AuthContext } from "../context/auth";
 import { PostForm } from "./PostForm";
 
 export const Home = () => {
+  const { user } = useContext(AuthContext);
   const { loading, data: { getPosts: posts } = {}, error } = useQuery(
     FETCH_POSTS
   );
@@ -17,9 +19,12 @@ export const Home = () => {
       </Grid.Row>
 
       <Grid.Row>
-        <Grid.Column>
-          <PostForm />
-        </Grid.Column>
+        {user && (
+          <Grid.Column>
+            {" "}
+            <PostForm />{" "}
+          </Grid.Column>
+        )}
         {loading ? (
           <Loader active size="massive"></Loader>
         ) : posts?.length ? (

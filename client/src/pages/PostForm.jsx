@@ -25,11 +25,19 @@ export const PostForm = () => {
       }
       setError({ error: err.message });
     },
-    update(_, result) {
+    update(proxy, result) {
+      const data = proxy.readQuery({ query: FETCH_POSTS });
+
+      proxy.writeQuery({
+        query: FETCH_POSTS,
+        data: {
+          getPosts: [result.data.createPost, ...data.getPosts],
+        },
+      });
+
       setError({});
       setValue(initialValue);
     },
-    refetchQueries: [{ query: FETCH_POSTS }],
   });
 
   function submitPost() {

@@ -56,8 +56,8 @@ export default gql`
     register(data: registerInput!): UserPayload!
     login(username: String!, password: String!): UserPayload!
     createPost(body: String!): Post!
-    deletePost(postId: String!): String!
-    createComment(postId: String!, body: String!): Post!
+    deletePost(postId: ID!): String!
+    createComment(postId: ID!, body: String!): Post!
     deleteComment(postId: ID!, commentId: String!): String!
     likePost(postId: ID!): Post!
   }

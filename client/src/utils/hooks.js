@@ -5,10 +5,6 @@ export const useForm = (initialValue, cb) => {
   const [value, setValue] = useState(initialValue);
 
   const handleInput = (e, { name, value }) => {
-    console.log(e.charCode);
-    console.log(e.shiftkey);
-    console.log(String.fromCharCode(value));
-    console.log(value);
     setValue((prevSate) => ({ ...prevSate, [name]: value }));
   };
 
