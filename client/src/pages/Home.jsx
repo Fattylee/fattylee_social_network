@@ -1,6 +1,6 @@
 import { gql, useQuery } from "@apollo/client";
 import React, { useContext } from "react";
-import { Grid, Loader } from "semantic-ui-react";
+import { Grid, Loader, Transition } from "semantic-ui-react";
 import { Post } from "../components/Post";
 import { AuthContext } from "../context/auth";
 import { PostForm } from "./PostForm";
@@ -11,7 +11,7 @@ export const Home = () => {
     FETCH_POSTS
   );
   if (error) return <h1>Error page</h1>;
-
+  console.log(posts);
   return (
     <Grid fluid="true" columns={3}>
       <Grid.Row centered>
@@ -28,11 +28,13 @@ export const Home = () => {
         {loading ? (
           <Loader active size="massive"></Loader>
         ) : posts?.length ? (
-          posts?.map((post) => (
-            <Grid.Column key={post.id} style={{ marginBottom: 20 }}>
-              <Post post={post} />
-            </Grid.Column>
-          ))
+          <Transition.Group>
+            {posts?.map((post) => (
+              <Grid.Column key={post.id} style={{ marginBottom: 20 }}>
+                <Post post={post} />
+              </Grid.Column>
+            ))}
+          </Transition.Group>
         ) : (
           <h1>No posts</h1>
         )}
@@ -50,6 +52,10 @@ export const FETCH_POSTS = gql`
       likeCount
       commentCount
       createdAt
+      likes {
+        username
+        id
+      }
     }
   }
 `;

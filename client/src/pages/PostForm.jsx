@@ -20,6 +20,10 @@ export const PostForm = () => {
   const [addNewPost, { loading }] = useMutation(CREATE_POST, {
     variables: value,
     onError({ graphQLErrors: [err] }) {
+      if (err.message?.includes("token")) {
+        // props.history.push("/login");
+        // check for expired token
+      }
       if (err.extensions.code === "BAD_USER_INPUT") {
         return setError(err.extensions.errors);
       }
@@ -34,7 +38,6 @@ export const PostForm = () => {
           getPosts: [result.data.createPost, ...data.getPosts],
         },
       });
-
       setError({});
       setValue(initialValue);
     },

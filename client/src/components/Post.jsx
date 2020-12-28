@@ -1,12 +1,33 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { Button, Card, Icon, Image, Label } from "semantic-ui-react";
 import moment from "moment";
 import { Link } from "react-router-dom";
+import { gql, useMutation } from "@apollo/client";
+import { FETCH_POSTS } from "../pages/Home";
+import { AuthContext } from "../context/auth";
 
 export const Post = ({
-  post: { id, body, commentCount, likeCount, username, createdAt },
+  post: { id, body, commentCount, likeCount, username, createdAt, likes },
 }) => {
-  const [toggleBasic, setToggleBasic] = useState(true);
+  const { user } = useContext(AuthContext);
+  const [likePost] = useMutation(LIKE_POST, {
+    onError({ graphQLErrors: [err] }) {
+      console.log(err.message);
+    },
+  });
+
+  const handleLike = (e) => {
+    likePost({
+      variables: {
+        postId: id,
+      },
+      refetchQueries: [{ query: FETCH_POSTS }],
+      update(cache, result) {
+        console.log("===============result============");
+        console.log(result);
+      },
+    });
+  };
   return (
     <Card fluid>
       <Card.Content>
@@ -21,11 +42,16 @@ export const Post = ({
         <div className="">
           <Button as="div" labelPosition="right">
             <Button
-              basic={toggleBasic}
+              basic={
+                likes.find(
+                  (l) =>
+                    l.username.toLowerCase() === user.username.toLowerCase()
+                )
+                  ? false
+                  : true
+              }
               color="teal"
-              onClick={(e) => {
-                setToggleBasic(!toggleBasic);
-              }}
+              onClick={handleLike}
             >
               <Icon name="heart" />
             </Button>
@@ -46,3 +72,20 @@ export const Post = ({
     </Card>
   );
 };
+
+export const LIKE_POST = gql`
+  mutation createLikePost($postId: ID!) {
+    likePost(postId: $postId) {
+      id
+      body
+      username
+      likeCount
+      commentCount
+      createdAt
+      likes {
+        username
+        id
+      }
+    }
+  }
+`;
