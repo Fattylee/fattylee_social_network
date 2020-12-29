@@ -7,7 +7,7 @@ import { FETCH_POSTS } from "./Home";
 const initialValue = {
   body: "",
 };
-export const PostForm = () => {
+export const PostForm = (props) => {
   const {
     setError,
     error,
@@ -21,8 +21,8 @@ export const PostForm = () => {
     variables: value,
     onError({ graphQLErrors: [err] }) {
       if (err.message?.includes("token")) {
-        // props.history.push("/login");
         // check for expired token
+        props.history.push("/login");
       }
       if (err.extensions.code === "BAD_USER_INPUT") {
         return setError(err.extensions.errors);
@@ -35,7 +35,7 @@ export const PostForm = () => {
       proxy.writeQuery({
         query: FETCH_POSTS,
         data: {
-          getPosts: [result.data.createPost, ...data.getPosts],
+          posts: [result.data.createPost, ...data.posts],
         },
       });
       setError({});

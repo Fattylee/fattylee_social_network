@@ -5,24 +5,31 @@ import { Post } from "../components/Post";
 import { AuthContext } from "../context/auth";
 import { PostForm } from "./PostForm";
 
-export const Home = () => {
+window.addEventListener("resize", (e) => {
+  console.log("i was resized!");
+  console.log(window.innerWidth);
+});
+export const Home = (props) => {
   const { user } = useContext(AuthContext);
-  const { loading, data: { getPosts: posts } = {}, error } = useQuery(
-    FETCH_POSTS
-  );
+  const { loading, data: { posts } = {}, error } = useQuery(FETCH_POSTS);
   if (error) return <h1>Error page</h1>;
-  console.log(posts);
   return (
-    <Grid fluid="true" columns={3}>
+    <Grid fluid="true">
       <Grid.Row centered>
         <h2>Recent posts</h2>
       </Grid.Row>
 
       <Grid.Row>
         {user && (
-          <Grid.Column>
+          <Grid.Column
+            mobile="16"
+            tablet="8"
+            computer="5"
+            largeScreen="4"
+            style={{ marginBottom: 20 }}
+          >
             {" "}
-            <PostForm />{" "}
+            <PostForm {...props} />{" "}
           </Grid.Column>
         )}
         {loading ? (
@@ -30,8 +37,15 @@ export const Home = () => {
         ) : posts?.length ? (
           <Transition.Group>
             {posts?.map((post) => (
-              <Grid.Column key={post.id} style={{ marginBottom: 20 }}>
-                <Post post={post} />
+              <Grid.Column
+                key={post.id}
+                style={{ marginBottom: 20 }}
+                mobile="16"
+                tablet="8"
+                computer="5"
+                largeScreen="4"
+              >
+                <Post post={post} {...props} />
               </Grid.Column>
             ))}
           </Transition.Group>
@@ -45,7 +59,7 @@ export const Home = () => {
 
 export const FETCH_POSTS = gql`
   query getPost {
-    getPosts {
+    posts: getPosts {
       id
       body
       username

@@ -1,5 +1,12 @@
 import React, { useContext } from "react";
-import { Button, Card, Icon, Image, Label } from "semantic-ui-react";
+import {
+  Button,
+  Card,
+  Icon,
+  Image,
+  Label,
+  Transition,
+} from "semantic-ui-react";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import { gql, useMutation } from "@apollo/client";
@@ -8,26 +15,41 @@ import { AuthContext } from "../context/auth";
 
 export const Post = ({
   post: { id, body, commentCount, likeCount, username, createdAt, likes },
+  history,
 }) => {
   const { user } = useContext(AuthContext);
   const [likePost] = useMutation(LIKE_POST, {
-    onError({ graphQLErrors: [err] }) {
+    onError(error) {
+      console.error(JSON.stringify(error, null, 1), "=======");
+      const {
+        graphQLErrors: [err],
+      } = error;
       console.log(err.message);
+      if (err.message.includes("token")) {
+        return history.push("/login");
+      }
     },
   });
 
+  const [visibility, setVisibility] = React.useState(true);
   const handleLike = (e) => {
+    setVisibility((prev) => !prev);
     likePost({
       variables: {
         postId: id,
       },
-      refetchQueries: [{ query: FETCH_POSTS }],
-      update(cache, result) {
-        console.log("===============result============");
-        console.log(result);
+      update(cache, { data: likePost }) {
+        const data = cache.readQuery({ query: FETCH_POSTS });
+        cache.writeQuery({
+          query: FETCH_POSTS,
+          data: {
+            posts: data.posts.map((p) => (p.id === likePost.id ? likePost : p)),
+          },
+        });
       },
     });
   };
+
   return (
     <Card fluid>
       <Card.Content>
@@ -43,9 +65,9 @@ export const Post = ({
           <Button as="div" labelPosition="right">
             <Button
               basic={
-                likes.find(
+                likes?.find(
                   (l) =>
-                    l.username.toLowerCase() === user.username.toLowerCase()
+                    l.username.toLowerCase() === user?.username.toLowerCase()
                 )
                   ? false
                   : true
@@ -55,9 +77,11 @@ export const Post = ({
             >
               <Icon name="heart" />
             </Button>
-            <Label as="a" basic color="teal" pointing="left">
-              {likeCount}
-            </Label>
+            <Transition animation="shake" visible={visibility}>
+              <Label as="a" basic color="teal" pointing="left">
+                {likeCount}
+              </Label>
+            </Transition>
           </Button>
           <Button as="div" labelPosition="right">
             <Button basic color="blue">
