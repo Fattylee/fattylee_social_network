@@ -53,7 +53,7 @@ export const postResolver = {
       if (like) {
         like.remove();
       } else {
-        post.likes.unshift({ username: user.username });
+        post.likes.push({ username: user.username });
       }
       return post.save();
     },

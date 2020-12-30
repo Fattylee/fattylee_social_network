@@ -1,55 +1,13 @@
-import React, { useContext } from "react";
-import {
-  Button,
-  Card,
-  Icon,
-  Image,
-  Label,
-  Transition,
-} from "semantic-ui-react";
+import React from "react";
+import { Button, Card, Icon, Image, Label } from "semantic-ui-react";
 import moment from "moment";
 import { Link } from "react-router-dom";
-import { gql, useMutation } from "@apollo/client";
-import { FETCH_POSTS } from "../pages/Home";
-import { AuthContext } from "../context/auth";
+import { LikeButton } from "./LikeButton";
 
 export const Post = ({
   post: { id, body, commentCount, likeCount, username, createdAt, likes },
   history,
 }) => {
-  const { user } = useContext(AuthContext);
-  const [likePost] = useMutation(LIKE_POST, {
-    onError(error) {
-      console.error(JSON.stringify(error, null, 1), "=======");
-      const {
-        graphQLErrors: [err],
-      } = error;
-      console.log(err.message);
-      if (err.message.includes("token")) {
-        return history.push("/login");
-      }
-    },
-  });
-
-  const [visibility, setVisibility] = React.useState(true);
-  const handleLike = (e) => {
-    setVisibility((prev) => !prev);
-    likePost({
-      variables: {
-        postId: id,
-      },
-      update(cache, { data: likePost }) {
-        const data = cache.readQuery({ query: FETCH_POSTS });
-        cache.writeQuery({
-          query: FETCH_POSTS,
-          data: {
-            posts: data.posts.map((p) => (p.id === likePost.id ? likePost : p)),
-          },
-        });
-      },
-    });
-  };
-
   return (
     <Card fluid>
       <Card.Content>
@@ -61,28 +19,8 @@ export const Post = ({
         <Card.Description>{body}</Card.Description>
       </Card.Content>
       <Card.Content extra>
-        <div className="">
-          <Button as="div" labelPosition="right">
-            <Button
-              basic={
-                likes?.find(
-                  (l) =>
-                    l.username.toLowerCase() === user?.username.toLowerCase()
-                )
-                  ? false
-                  : true
-              }
-              color="teal"
-              onClick={handleLike}
-            >
-              <Icon name="heart" />
-            </Button>
-            <Transition animation="shake" visible={visibility}>
-              <Label as="a" basic color="teal" pointing="left">
-                {likeCount}
-              </Label>
-            </Transition>
-          </Button>
+        <div>
+          <LikeButton post={{ id, likes, likeCount }} history={history} />
           <Button as="div" labelPosition="right">
             <Button basic color="blue">
               <Icon name="comments" />
@@ -96,20 +34,3 @@ export const Post = ({
     </Card>
   );
 };
-
-export const LIKE_POST = gql`
-  mutation createLikePost($postId: ID!) {
-    likePost(postId: $postId) {
-      id
-      body
-      username
-      likeCount
-      commentCount
-      createdAt
-      likes {
-        username
-        id
-      }
-    }
-  }
-`;

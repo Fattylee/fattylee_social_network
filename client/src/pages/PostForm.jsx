@@ -1,6 +1,7 @@
 import { gql, useMutation } from "@apollo/client";
-import React from "react";
+import React, { useContext } from "react";
 import { Button, Form, Message } from "semantic-ui-react";
+import { AuthContext } from "../context/auth";
 import { useForm } from "../utils/hooks";
 import { FETCH_POSTS } from "./Home";
 
@@ -17,11 +18,18 @@ export const PostForm = (props) => {
     handleInput,
   } = useForm(initialValue, submitPost);
 
+  const { logout } = useContext(AuthContext);
+
   const [addNewPost, { loading }] = useMutation(CREATE_POST, {
     variables: value,
-    onError({ graphQLErrors: [err] }) {
+    onError(error) {
+      console.error(JSON.stringify(error, null, 1), "=======");
+      const {
+        graphQLErrors: [err],
+      } = error;
       if (err.message?.includes("token")) {
         // check for expired token
+        logout();
         props.history.push("/login");
       }
       if (err.extensions.code === "BAD_USER_INPUT") {
