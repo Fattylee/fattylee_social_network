@@ -3,6 +3,7 @@ import { Button, Card, Icon, Image, Label } from "semantic-ui-react";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import { LikeButton } from "./LikeButton";
+import DeleteButton from "./DeleteButton";
 
 export const Post = ({
   post: { id, body, commentCount, likeCount, username, createdAt, likes },
@@ -13,8 +14,8 @@ export const Post = ({
       <Card.Content>
         <Image floated="right" size="mini" src="assets/img/adam.jpg" />
         <Card.Header>{username}</Card.Header>
-        <Card.Meta as={Link} to="/papa">
-          {moment(createdAt).fromNow()}
+        <Card.Meta as={Link} to={`/posts/${id}`}>
+          {moment(createdAt).fromNow(true)}
         </Card.Meta>
         <Card.Description>{body}</Card.Description>
       </Card.Content>
@@ -29,6 +30,10 @@ export const Post = ({
               {commentCount}
             </Label>
           </Button>
+          <DeleteButton
+            postOrComment={{ owner: username, postOrCommentId: id }}
+            history={history}
+          />
         </div>
       </Card.Content>
     </Card>

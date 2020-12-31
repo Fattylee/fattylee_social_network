@@ -1,15 +1,16 @@
 import apolloServer from "apollo-server";
 import { authChecker } from "../../utils/authChecker.js";
-import {
-  validatePostData,
-  validatePostDeleteData,
-} from "../../utils/validator.js";
+import { validatePostData, validatePostID } from "../../utils/validator.js";
 
 export const postResolver = {
   Query: {
     getPosts(parent, args, ctx, info) {
       console.log("getPost");
       return ctx.Post.find().sort({ createdAt: -1 });
+    },
+    getPost(_, { postId }, { Post }) {
+      validatePostID({ postId });
+      return Post.findById(postId);
     },
   },
   Mutation: {
@@ -22,7 +23,7 @@ export const postResolver = {
       return ctx.Post.create({ body, username: user.username, user: user.id });
     },
     async deletePost(_, { postId }, ctx) {
-      validatePostDeleteData({ postId });
+      validatePostID({ postId });
 
       const user = authChecker(ctx);
 
@@ -41,7 +42,7 @@ export const postResolver = {
       return "Post deleted successfully";
     },
     async likePost(_, { postId }, ctx) {
-      validatePostDeleteData({ postId });
+      validatePostID({ postId });
       const user = authChecker(ctx);
 
       const post = await ctx.Post.findById(postId);

@@ -18,6 +18,13 @@ export default {
     createdAt(parent) {
       return parent.createdAt.toISOString();
     },
+    comments(parent) {
+      return parent.comments.map((comment) => ({
+        ...comment._doc,
+        createdAt: comment.createdAt.toISOString(),
+        id: comment.id,
+      }));
+    },
   },
   User: {
     posts(parent, _, { Post }) {

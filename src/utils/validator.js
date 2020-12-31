@@ -56,7 +56,7 @@ export const validatePostData = (data) => {
   return value;
 };
 
-export const validatePostDeleteData = (data) => {
+export const validatePostID = (data) => {
   const { error, value } = Joi.object({
     postId: Joi.string()
       .pattern(/[0-9a-f]{24}/)

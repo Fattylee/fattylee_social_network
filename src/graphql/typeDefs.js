@@ -51,7 +51,9 @@ export default gql`
   type Query {
     me: User!
     getPosts: [Post]!
+    getPost(postId: ID!): Post
   }
+
   type Mutation {
     register(data: registerInput!): UserPayload!
     login(username: String!, password: String!): UserPayload!

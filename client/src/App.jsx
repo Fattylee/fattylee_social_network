@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Container } from "semantic-ui-react";
 
 import { Header } from "./components/Header";
+import { SinglePost } from "./components/SinglePost";
 import { AuthProvider } from "./context/auth";
 import { AuthRoute } from "./context/AuthRoute";
 import { ProtectedRoute } from "./context/ProtectedRoute";
@@ -21,6 +22,11 @@ const App = () => {
             <Switch>
               <Route exact path="/" component={Home} />
               <ProtectedRoute exact path="/posts" component={Home} />
+              <ProtectedRoute
+                exact
+                path="/posts/:postId"
+                component={SinglePost}
+              />
               <AuthRoute exact path="/login" component={Login} />
               <AuthRoute exact path="/register" component={Register} />
               <Route component={NotFound} />

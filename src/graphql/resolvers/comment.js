@@ -16,7 +16,11 @@ export const commentResolver = {
 
       if (!post) throw new apolloServer.UserInputError("Post not found");
 
-      post.comments.unshift({ body, username });
+      post.comments.unshift({
+        body,
+        username,
+        // createdAt: new Date().toISOString(),
+      });
       return post.save();
     },
     async deleteComment(_, { postId, commentId }, ctx) {

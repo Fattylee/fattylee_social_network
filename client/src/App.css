@@ -7,3 +7,11 @@
   max-width: 50%;
   margin: auto;
 }
+
+.gutterBottom {
+  margin-bottom: 2rem !important;
+}
+
+.gutterTop {
+  margin-top: 2rem !important;
+}
