@@ -78,7 +78,7 @@ export const validateCommentData = (data) => {
       .pattern(/[0-9a-f]{24}/)
       .message("Invalid post id")
       .required(),
-    body: Joi.string().min(3).required(),
+    body: Joi.string().required(),
   }).validate(data, validateOption);
 
   if (error)
