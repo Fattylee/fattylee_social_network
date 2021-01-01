@@ -60,7 +60,7 @@ export default gql`
     createPost(body: String!): Post!
     deletePost(postId: ID!): String!
     createComment(postId: ID!, body: String!): Post!
-    deleteComment(postId: ID!, commentId: String!): String!
+    deleteComment(postId: ID!, commentId: ID!): String!
     likePost(postId: ID!): Post!
   }
 `;

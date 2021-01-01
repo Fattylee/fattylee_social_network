@@ -58,7 +58,7 @@ export const Home = (props) => {
 };
 
 export const FETCH_POSTS = gql`
-  query getPost {
+  query fetchPosts {
     posts: getPosts {
       id
       body

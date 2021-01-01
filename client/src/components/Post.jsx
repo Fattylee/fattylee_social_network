@@ -31,7 +31,7 @@ export const Post = ({
             </Label>
           </Button>
           <DeleteButton
-            postOrComment={{ owner: username, postOrCommentId: id }}
+            postOrComment={{ owner: username, postId: id }}
             history={history}
           />
         </div>

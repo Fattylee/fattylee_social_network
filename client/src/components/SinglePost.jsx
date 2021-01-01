@@ -1,9 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import {
   Button,
   Card,
-  CommentActions,
   Grid,
   Header,
   Icon,
@@ -61,6 +59,10 @@ export const SinglePost = ({ history, match }) => {
     },
   } = data;
 
+  const handleCallback = (err) => {
+    console.log(err);
+  };
+
   return (
     <Grid className="gutterTop">
       <Grid.Row columns="equal">
@@ -91,19 +93,26 @@ export const SinglePost = ({ history, match }) => {
                   </Label>
                 </Button>
                 <DeleteButton
-                  post={{ postOwner: username, postId: id }}
+                  postOrComment={{ owner: username, postId: id }}
                   history={history}
                 />
               </div>
             </Card.Content>
           </Card>
-          {comments.map(({ id, username, body, createdAt }) => (
-            <Card fluid key={id}>
+          {comments.map((comment) => (
+            <Card fluid key={comment.id}>
               <Card.Content>
-                <Card.Header content={username} />
+                <Card.Header content={comment.username} />
                 <Card.Meta content={moment(createdAt).fromNow()} />
-                <Card.Description content={body} />
-                <DeleteButton post={{ postId: id, postOwner: username }} />
+                <Card.Description content={comment.body} />
+                <DeleteButton
+                  postOrComment={{
+                    postId: id,
+                    owner: comment.username,
+                    commentId: comment.id,
+                    callback: handleCallback,
+                  }}
+                />
               </Card.Content>
             </Card>
           ))}
@@ -113,7 +122,7 @@ export const SinglePost = ({ history, match }) => {
   );
 };
 
-const FETCH_A_POST = gql`
+export const FETCH_A_POST = gql`
   query giveMeApost($postId: ID!) {
     post: getPost(postId: $postId) {
       id
