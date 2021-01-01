@@ -5,12 +5,12 @@ import { AuthContext } from "../context/auth";
 import {
   DELETE_COMMENT,
   DELETE_POST,
-  FETCH_POSTS,
   FETCH_A_POST,
+  FETCH_POSTS,
 } from "../utils/query";
 
 const DeleteButton = ({
-  postOrComment: { owner, postId, callback, commentId },
+  postOrComment: { owner, postId, commentId },
   history,
 }) => {
   const { user, logout } = useContext(AuthContext);
@@ -25,8 +25,6 @@ const DeleteButton = ({
       },
       onError(error) {
         setToggleVisibility(false);
-        if (callback) callback(error);
-        console.error(JSON.stringify(error, null, 1));
         if (error.message.includes("token")) {
           logout();
           history.push("/login");
@@ -52,7 +50,6 @@ const DeleteButton = ({
             query: FETCH_A_POST,
             variables: { postId },
           });
-
           cache.writeQuery({
             query: FETCH_A_POST,
             variables: { postId },

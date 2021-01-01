@@ -87,3 +87,20 @@ export const DELETE_COMMENT = gql`
     deleteComment(postId: $postId, commentId: $commentId)
   }
 `;
+
+export const LIKE_POST = gql`
+  mutation createLikePost($postId: ID!) {
+    likePost(postId: $postId) {
+      id
+      body
+      username
+      likeCount
+      commentCount
+      createdAt
+      likes {
+        username
+        id
+      }
+    }
+  }
+`;

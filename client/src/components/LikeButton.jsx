@@ -1,4 +1,4 @@
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import React, { useContext, useState } from "react";
 import {
   Button,
@@ -10,25 +10,17 @@ import {
 } from "semantic-ui-react";
 
 import { AuthContext } from "../context/auth";
+import { LIKE_POST } from "../utils/query";
 
 export const LikeButton = ({ post: { likes, id, likeCount }, history }) => {
   const [visibility, setVisibility] = useState(true);
-  // console.log({ likes, id, likeCount });
 
   const { user, logout } = useContext(AuthContext);
   const [likePost] = useMutation(LIKE_POST, {
     onError(error) {
-      console.error(JSON.stringify(error, null, 1), "=======");
-      const {
-        graphQLErrors: [err],
-      } = error;
-      console.log(err.message);
-      if (err.message.includes("token")) {
-        console.log("i got here");
-        // delete the expired/invalid token
-        // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZTFhYTFjYjI2M2RiMjc5YjUwMzg1ZCIsInVzZXJuYW1lIjoiZmF0dHlsZWUiLCJlbWFpbCI6Imp0dEBnbWFpbC5jb20iLCJpYXQiOjE2MDkyNjI0ODIsImV4cCI6MTYwOTI2NjA4Mn0.Bz1lVwBqmInhxXus6eDbJrEYQzq1X2ZiAglE12HE8Tc
+      if (error.message.includes("token")) {
         logout();
-        return history.push("/login");
+        history.push("/login");
       }
     },
   });
@@ -41,6 +33,7 @@ export const LikeButton = ({ post: { likes, id, likeCount }, history }) => {
       },
     });
   };
+
   return (
     <Button as="div" labelPosition="right">
       <Transition animation="shake" visible={visibility}>
@@ -77,20 +70,3 @@ export const LikeButton = ({ post: { likes, id, likeCount }, history }) => {
     </Button>
   );
 };
-
-export const LIKE_POST = gql`
-  mutation createLikePost($postId: ID!) {
-    likePost(postId: $postId) {
-      id
-      body
-      username
-      likeCount
-      commentCount
-      createdAt
-      likes {
-        username
-        id
-      }
-    }
-  }
-`;

@@ -21,12 +21,9 @@ const App = () => {
             <Header />
             <Switch>
               <Route exact path="/" component={Home} />
+              {/* testing only */}
               <ProtectedRoute exact path="/posts" component={Home} />
-              <ProtectedRoute
-                exact
-                path="/posts/:postId"
-                component={SinglePost}
-              />
+              <Route exact path="/posts/:postId" component={SinglePost} />
               <AuthRoute exact path="/login" component={Login} />
               <AuthRoute exact path="/register" component={Register} />
               <Route component={NotFound} />

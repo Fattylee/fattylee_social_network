@@ -19,6 +19,7 @@ export const commentResolver = {
       post.comments.unshift({
         body,
         username,
+        createdAt: new Date().toISOString(),
       });
       return post.save();
     },

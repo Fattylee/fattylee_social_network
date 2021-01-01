@@ -19,6 +19,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import { useForm } from "../utils/hooks";
 import { AuthContext } from "../context/auth";
 import { FETCH_A_POST, POST_COMMENT } from "../utils/query";
+import { Link } from "react-router-dom";
 
 export const SinglePost = ({ history, match }) => {
   const { data, loading, error } = useQuery(FETCH_A_POST, {
@@ -26,13 +27,13 @@ export const SinglePost = ({ history, match }) => {
       postId: match.params.postId,
     },
   });
-  const { logout } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
 
   const [addComment] = useMutation(POST_COMMENT, {
     onError(error) {
-      console.log(JSON.stringify(error, null, 2));
       if (error.message.includes("token")) {
         logout();
+        history.push("/login");
       }
     },
   });
@@ -100,10 +101,6 @@ export const SinglePost = ({ history, match }) => {
     },
   } = data;
 
-  const handleCallback = (err) => {
-    console.log(err);
-  };
-
   return (
     <Grid className="gutterTop">
       <Grid.Row columns="equal">
@@ -140,7 +137,7 @@ export const SinglePost = ({ history, match }) => {
               </div>
             </Card.Content>
           </Card>
-          {!commentCount && (
+          {user && !commentCount && (
             <Header
               content="Be the first to comment"
               size="tiny"
@@ -148,22 +145,29 @@ export const SinglePost = ({ history, match }) => {
               as="p"
             />
           )}
-          <Form onSubmit={handleSubmit}>
-            <Form.TextArea
-              onChange={handleInput}
-              value={value.body}
-              name="body"
-              placeholder="Write a public comment..."
-              error={formError.body}
-            />
-            <Form.Button
-              disabled={!value.body.length}
-              icon="send"
-              size="large"
-              color="blue"
-              content="Send"
-            />
-          </Form>
+          {!user && (
+            <>
+              <Link to="/login">Login</Link> to comment
+            </>
+          )}
+          {user && (
+            <Form onSubmit={handleSubmit}>
+              <Form.TextArea
+                onChange={handleInput}
+                value={value.body}
+                name="body"
+                placeholder="Write a public comment..."
+                error={formError.body}
+              />
+              <Form.Button
+                disabled={!value.body.length}
+                icon="send"
+                size="large"
+                color="blue"
+                content="Send"
+              />
+            </Form>
+          )}
 
           <Transition.Group>
             {comments?.map((comment) => (
@@ -177,7 +181,6 @@ export const SinglePost = ({ history, match }) => {
                       postId: id,
                       owner: comment.username,
                       commentId: comment.id,
-                      callback: handleCallback,
                     }}
                     history={history}
                   />
