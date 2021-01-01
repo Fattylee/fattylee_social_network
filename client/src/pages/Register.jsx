@@ -38,7 +38,6 @@ export const Register = (props) => {
       setError({ error: err.message });
     },
     variables: value,
-    // refetchQueries: [{query}],
   });
 
   function handleRegisterUser() {

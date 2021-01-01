@@ -3,7 +3,7 @@ import React, { useContext } from "react";
 import { Button, Form, Message } from "semantic-ui-react";
 import { AuthContext } from "../context/auth";
 import { useForm } from "../utils/hooks";
-import { FETCH_POSTS } from "./Home";
+import { CREATE_POST, FETCH_POSTS } from "../utils/query";
 
 const initialValue = {
   body: "",
@@ -76,16 +76,3 @@ export const PostForm = (props) => {
     </Form>
   );
 };
-
-const CREATE_POST = gql`
-  mutation newPost($body: String!) {
-    createPost(body: $body) {
-      id
-      body
-      createdAt
-      username
-      commentCount
-      likeCount
-    }
-  }
-`;

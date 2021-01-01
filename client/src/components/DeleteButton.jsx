@@ -1,9 +1,13 @@
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import React, { useContext, useState } from "react";
 import { Button, Confirm } from "semantic-ui-react";
 import { AuthContext } from "../context/auth";
-import { FETCH_POSTS } from "../pages/Home";
-import { FETCH_A_POST } from "./SinglePost";
+import {
+  DELETE_COMMENT,
+  DELETE_POST,
+  FETCH_POSTS,
+  FETCH_A_POST,
+} from "../utils/query";
 
 const DeleteButton = ({
   postOrComment: { owner, postId, callback, commentId },
@@ -53,7 +57,11 @@ const DeleteButton = ({
             query: FETCH_A_POST,
             variables: { postId },
             data: {
-              post: data.post.comments.filter((c) => c.id !== commentId),
+              post: {
+                ...data.post,
+                comments: data.post.comments.filter((c) => c.id !== commentId),
+                commentCount: data.post.commentCount - 1,
+              },
             },
           });
         }
@@ -87,15 +95,3 @@ const DeleteButton = ({
 };
 
 export default DeleteButton;
-
-const DELETE_POST = gql`
-  mutation deletePost($postId: ID!) {
-    deletePost(postId: $postId)
-  }
-`;
-
-const DELETE_COMMENT = gql`
-  mutation deleteComment($commentId: ID!, $postId: ID!) {
-    deleteComment(postId: $postId, commentId: $commentId)
-  }
-`;

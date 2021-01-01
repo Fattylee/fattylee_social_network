@@ -3,6 +3,7 @@ import React, { useContext } from "react";
 import { Grid, Loader, Transition } from "semantic-ui-react";
 import { Post } from "../components/Post";
 import { AuthContext } from "../context/auth";
+import { FETCH_POSTS } from "../utils/query";
 import { PostForm } from "./PostForm";
 
 window.addEventListener("resize", (e) => {
@@ -56,20 +57,3 @@ export const Home = (props) => {
     </Grid>
   );
 };
-
-export const FETCH_POSTS = gql`
-  query fetchPosts {
-    posts: getPosts {
-      id
-      body
-      username
-      likeCount
-      commentCount
-      createdAt
-      likes {
-        username
-        id
-      }
-    }
-  }
-`;

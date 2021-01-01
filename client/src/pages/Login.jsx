@@ -10,8 +10,6 @@ import { Layout } from "./Layout";
 const initialValue = {
   username: "",
   password: "",
-  confirm_password: "",
-  email: "",
 };
 
 export const Login = (props) => {
