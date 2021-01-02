@@ -11,7 +11,6 @@ import {
 
 import { AuthContext } from "../context/auth";
 import { LIKE_POST } from "../utils/query";
-import { MyPopup } from "./MyPopup";
 
 export const LikeButton = ({ post: { likes, id, likeCount }, history }) => {
   const [visibility, setVisibility] = useState(true);
@@ -49,6 +48,9 @@ export const LikeButton = ({ post: { likes, id, likeCount }, history }) => {
         </Button>
       </Transition>
       <Popup
+        basic
+        inverted
+        style={{ background: "rgba(0,0,0,0.8)" }}
         content={
           <List>
             {likes?.length ? (

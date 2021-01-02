@@ -5,7 +5,6 @@ import { Card, Form, Grid, Header, Message } from "semantic-ui-react";
 import { AuthContext } from "../context/auth";
 
 import { useForm } from "../utils/hooks";
-import { Layout } from "./Layout";
 
 const initialValue = {
   username: "",

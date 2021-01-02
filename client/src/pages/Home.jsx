@@ -1,4 +1,4 @@
-import { gql, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import React, { useContext } from "react";
 import { Grid, Loader, Transition } from "semantic-ui-react";
 import { Post } from "../components/Post";
@@ -6,10 +6,6 @@ import { AuthContext } from "../context/auth";
 import { FETCH_POSTS } from "../utils/query";
 import { PostForm } from "./PostForm";
 
-window.addEventListener("resize", (e) => {
-  console.log("i was resized!");
-  console.log(window.innerWidth);
-});
 export const Home = (props) => {
   const { user } = useContext(AuthContext);
   const { loading, data: { posts } = {}, error } = useQuery(FETCH_POSTS);

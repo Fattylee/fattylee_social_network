@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export const useForm = (initialValue, cb) => {
   const [error, setError] = useState({});
@@ -24,25 +24,23 @@ export const useForm = (initialValue, cb) => {
 };
 
 export const useViewpoint = () => {
-  const [breakPoint, setBreakPoint] = useState(window.innerWidth);
-
   const getWidth = (width) => {
-    if (width <= 320) {
-      return "xs";
-    } else if (width > 320 && width <= 700) {
-      return "sm";
-    } else if (width > 700 && width <= 920) {
-      return "md";
-    } else if (width > 920 && width <= 1200) {
-      return "lg";
-    } else {
-      return "xl";
+    if (width < 768) {
+      return "mobile";
+    } else if (width >= 768 && width <= 991) {
+      return "tablet";
+    } else if (width > 991 && width <= 1200) {
+      return "computer";
+    } else if (width > 1200) {
+      return "large screen";
     }
   };
-  const handleResize = (e) => {
-    console.log(window.innerWidth, "*****SIZE*****");
+
+  const [breakPoint, setBreakPoint] = useState(getWidth(window.innerWidth));
+
+  const handleResize = useCallback(() => {
     setBreakPoint(getWidth(window.innerWidth));
-  };
+  }, []);
 
   useEffect(() => {
     window.addEventListener("resize", handleResize);
@@ -50,7 +48,7 @@ export const useViewpoint = () => {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [handleResize]);
 
   return breakPoint;
 };
