@@ -11,7 +11,8 @@
   "scripts": {
     "start": "node server/src",
     "start:dev": "nodemon server/src",
-    "start:client": "cd client && yarn start"
+    "start:client": "cd client && yarn start",
+    "start:client:build": "cd client && yarn build"
   },
   "keywords": [
     "graphql",
