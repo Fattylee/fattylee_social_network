@@ -3,10 +3,12 @@ import React, { useContext } from "react";
 import { Grid, Loader, Transition } from "semantic-ui-react";
 import { Post } from "../components/Post";
 import { AuthContext } from "../context/auth";
+import { useViewpoint } from "../utils/hooks";
 import { FETCH_POSTS } from "../utils/query";
 import { PostForm } from "./PostForm";
 
 export const Home = (props) => {
+  const screen = useViewpoint();
   const { user } = useContext(AuthContext);
   const { loading, data: { posts } = {}, error } = useQuery(FETCH_POSTS);
   if (error) return <h1>Error page</h1>;
@@ -16,15 +18,9 @@ export const Home = (props) => {
         <h2>Recent posts</h2>
       </Grid.Row>
 
-      <Grid.Row>
+      <Grid.Row columns={screen == "mobile" ? 1 : screen === "tablet" ? 2 : 3}>
         {user && (
-          <Grid.Column
-            mobile="16"
-            tablet="8"
-            computer="5"
-            largeScreen="4"
-            style={{ marginBottom: 20 }}
-          >
+          <Grid.Column style={{ marginBottom: 20 }}>
             {" "}
             <PostForm {...props} />{" "}
           </Grid.Column>
@@ -34,14 +30,7 @@ export const Home = (props) => {
         ) : posts?.length ? (
           <Transition.Group>
             {posts?.map((post) => (
-              <Grid.Column
-                key={post.id}
-                style={{ marginBottom: 20 }}
-                mobile="16"
-                tablet="8"
-                computer="5"
-                largeScreen="4"
-              >
+              <Grid.Column key={post.id} style={{ marginBottom: 20 }}>
                 <Post post={post} {...props} />
               </Grid.Column>
             ))}
