@@ -4,6 +4,7 @@ import moment from "moment";
 import { Link } from "react-router-dom";
 import { LikeButton } from "./LikeButton";
 import DeleteButton from "./DeleteButton";
+import { MyPopup } from "./MyPopup";
 
 export const Post = ({
   post: { id, body, commentCount, likeCount, username, createdAt, likes },
@@ -22,14 +23,17 @@ export const Post = ({
       <Card.Content extra>
         <div>
           <LikeButton post={{ id, likes, likeCount }} history={history} />
-          <Button as="div" labelPosition="right">
-            <Button basic color="blue">
-              <Icon name="comments" />
+          <MyPopup content="comments on a post">
+            <Button as="div" labelPosition="right">
+              <Button as={Link} to={`posts/${id}`} basic color="blue">
+                <Icon name="comments" />
+              </Button>
+              <Label as="a" basic color="blue" pointing="left">
+                {commentCount}
+              </Label>
             </Button>
-            <Label as="a" basic color="blue" pointing="left">
-              {commentCount}
-            </Label>
-          </Button>
+          </MyPopup>
+
           <DeleteButton
             postOrComment={{ owner: username, postId: id }}
             history={history}

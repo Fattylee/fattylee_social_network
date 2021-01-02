@@ -11,6 +11,7 @@ import {
 
 import { AuthContext } from "../context/auth";
 import { LIKE_POST } from "../utils/query";
+import { MyPopup } from "./MyPopup";
 
 export const LikeButton = ({ post: { likes, id, likeCount }, history }) => {
   const [visibility, setVisibility] = useState(true);
@@ -34,20 +35,16 @@ export const LikeButton = ({ post: { likes, id, likeCount }, history }) => {
     });
   };
 
+  const isLike = likes?.find(
+    (l) => l.username.toLowerCase() === user?.username.toLowerCase()
+  )
+    ? false
+    : true;
+
   return (
     <Button as="div" labelPosition="right">
       <Transition animation="shake" visible={visibility}>
-        <Button
-          basic={
-            likes?.find(
-              (l) => l.username.toLowerCase() === user?.username.toLowerCase()
-            )
-              ? false
-              : true
-          }
-          color="teal"
-          onClick={handleLike}
-        >
+        <Button basic={isLike} color="teal" onClick={handleLike}>
           <Icon name="heart" />
         </Button>
       </Transition>
