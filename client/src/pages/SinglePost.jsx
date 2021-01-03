@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 import {
   Button,
   Card,
-  Form,
   Grid,
   Header,
   Icon,
@@ -15,11 +14,11 @@ import {
 import DeleteButton from "../components/DeleteButton";
 import { LikeButton } from "../components/LikeButton";
 import moment from "moment";
-import { useMutation, useQuery } from "@apollo/client";
-import { useForm } from "../utils/hooks";
+import { useQuery } from "@apollo/client";
 import { AuthContext } from "../context/auth";
-import { FETCH_A_POST, POST_COMMENT } from "../utils/query";
+import { FETCH_A_POST } from "../utils/query";
 import { Link } from "react-router-dom";
+import { CommentForm } from "../components/CommentForm";
 
 export const SinglePost = ({ history, match }) => {
   const { data, loading, error } = useQuery(FETCH_A_POST, {
@@ -27,50 +26,7 @@ export const SinglePost = ({ history, match }) => {
       postId: match.params.postId,
     },
   });
-  const { user, logout } = useContext(AuthContext);
-
-  const [
-    addComment,
-    { loading: commentLoading, error: commentError },
-  ] = useMutation(POST_COMMENT, {
-    onError(error) {
-      console.log(JSON.stringify(error, null, 2));
-      if (error.message.includes("token")) {
-        logout();
-        history.push("/login");
-      }
-    },
-  });
-  console.log("error comment", commentError?.message);
-
-  const { handleSubmit, handleInput, value, error: formError } = useForm(
-    {
-      body: "",
-    },
-    handleComment
-  );
-
-  function handleComment() {
-    addComment({
-      update(cache, result) {
-        value.body = "";
-
-        cache.writeQuery({
-          query: FETCH_A_POST,
-          variables: {
-            postId: match.params.postId,
-          },
-          data: {
-            post: result.data.post,
-          },
-        });
-      },
-      variables: {
-        postId: match.params.postId,
-        body: value.body,
-      },
-    });
-  }
+  const { user } = useContext(AuthContext);
 
   if (loading) return <Loader size="large" />;
   if (error)
@@ -157,31 +113,7 @@ export const SinglePost = ({ history, match }) => {
               <Link to="/login">Login</Link> to comment
             </>
           )}
-          {user && (
-            <Form onSubmit={handleSubmit}>
-              <Form.TextArea
-                onChange={handleInput}
-                value={value.body}
-                name="body"
-                placeholder="Write a public comment..."
-                error={formError.body}
-              />
-              <Form.Button
-                disabled={commentLoading || !value.body.length}
-                icon="send"
-                size="large"
-                color="blue"
-                content="Send"
-                loading={commentLoading}
-              />
-              {commentError?.message?.includes("Failed to fetch") && (
-                <Message
-                  negative
-                  content="Network error, check your internet connextion and try again."
-                />
-              )}
-            </Form>
-          )}
+          {user && <CommentForm history={history} match={match} />}
 
           <Transition.Group>
             {comments?.map((comment) => (
