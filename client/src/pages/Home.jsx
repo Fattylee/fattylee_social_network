@@ -18,7 +18,7 @@ export const Home = (props) => {
         <h2>Recent posts</h2>
       </Grid.Row>
 
-      <Grid.Row columns={screen == "mobile" ? 1 : screen === "tablet" ? 2 : 3}>
+      <Grid.Row columns={screen === "mobile" ? 1 : screen === "tablet" ? 2 : 3}>
         {user && (
           <Grid.Column style={{ marginBottom: 20 }}>
             {" "}
