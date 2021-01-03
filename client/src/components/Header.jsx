@@ -7,17 +7,24 @@ export const Header = () => {
   const { user, logout } = useContext(AuthContext);
   const [activeItem, setActiveItem] = useState(() => {
     const pathname = window.location.pathname;
-    return pathname === "/" ? "home" : pathname.substr(1);
+    return pathname === "/" ? "sayurs" : pathname.substr(1);
   });
 
   const handleItemClick = (e, { name }) => {
     setActiveItem(name);
   };
-
   const authLinks = (
     <Menu pointing size="massive" color="blue">
-      <Menu.Item as={Link} to="/" name={user?.username} active />
+      <Menu.Item
+        icon="microphone"
+        as={Link}
+        to="/"
+        name="sayurs"
+        active={activeItem === "sayurs"}
+        onClick={handleItemClick}
+      />
       <Menu.Menu position="right">
+        <Menu.Item name={user?.username} />
         <Menu.Item name="logout" as={Link} to="/" onClick={logout} />
       </Menu.Menu>
     </Menu>
@@ -26,10 +33,11 @@ export const Header = () => {
   const guestLinks = (
     <Menu pointing size="massive" color="blue">
       <Menu.Item
+        icon="microphone"
         as={Link}
         to="/"
-        name="home"
-        active={activeItem === "home"}
+        name="sayurs"
+        active={activeItem === "sayurs"}
         onClick={handleItemClick}
       />
       <Menu.Menu position="right">

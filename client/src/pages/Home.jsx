@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 import React, { useContext } from "react";
-import { Grid, Loader, Transition } from "semantic-ui-react";
+import { Grid, Icon, Loader, Transition } from "semantic-ui-react";
 import { Post } from "../components/Post";
 import { AuthContext } from "../context/auth";
 import { useViewpoint } from "../utils/hooks";
@@ -15,6 +15,7 @@ export const Home = (props) => {
   return (
     <Grid fluid="true">
       <Grid.Row centered>
+        {/* <Icon name="user" /> */}
         <h2>Recent posts</h2>
       </Grid.Row>
 
