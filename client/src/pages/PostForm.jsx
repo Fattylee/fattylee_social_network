@@ -1,6 +1,6 @@
 import { useMutation } from "@apollo/client";
 import React, { useContext } from "react";
-import { Button, Form, Message } from "semantic-ui-react";
+import { Button, Form } from "semantic-ui-react";
 import { AuthContext } from "../context/auth";
 import { useForm } from "../utils/hooks";
 import { CREATE_POST, FETCH_POSTS } from "../utils/query";
@@ -28,7 +28,6 @@ export const PostForm = (props) => {
         graphQLErrors: [err],
       } = error;
       if (err.message?.includes("token")) {
-        // check for expired token
         logout();
         props.history.push("/login");
       }
@@ -37,10 +36,10 @@ export const PostForm = (props) => {
       }
       setError({ error: err.message });
     },
-    update(proxy, result) {
-      const data = proxy.readQuery({ query: FETCH_POSTS });
+    update(cache, result) {
+      const data = cache.readQuery({ query: FETCH_POSTS });
 
-      proxy.writeQuery({
+      cache.writeQuery({
         query: FETCH_POSTS,
         data: {
           posts: [result.data.createPost, ...data.posts],
@@ -56,23 +55,22 @@ export const PostForm = (props) => {
   }
 
   return (
-    <Form
-      error={!!Object.keys(error || {}).length}
-      loading={loading}
-      size="big"
-      onSubmit={handleSubmit}
-    >
+    <Form loading={loading} size="big" onSubmit={handleSubmit}>
       <Form.TextArea
-        label="New post"
-        placeholder="New post"
+        label="What's on your mind?"
+        placeholder="What's happening?"
         name="body"
         value={value.body}
         onChange={handleInput}
         error={error.body}
       />
-      <Button color="blue">Add post</Button>
-
-      <Message error header="Fix all errors" content={error.error} />
+      <Button
+        loading={loading}
+        disabled={loading || !value.body.length}
+        color="blue"
+      >
+        Add post
+      </Button>
     </Form>
   );
 };

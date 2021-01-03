@@ -104,3 +104,15 @@ export const LIKE_POST = gql`
     }
   }
 `;
+
+export const LOGIN = gql`
+  mutation loginAccount($username: String!, $password: String!) {
+    login(username: $username, password: $password) {
+      id
+      username
+      email
+      token
+      createdAt
+    }
+  }
+`;

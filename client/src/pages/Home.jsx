@@ -36,7 +36,7 @@ export const Home = (props) => {
             ))}
           </Transition.Group>
         ) : (
-          <h1>No posts</h1>
+          <h1>Nothing to see here...yet.</h1>
         )}
       </Grid.Row>
     </Grid>

@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Container } from "semantic-ui-react";
 
 import { Header } from "./components/Header";
-import { SinglePost } from "./components/SinglePost";
+import { SinglePost } from "./pages/SinglePost";
 import { AuthProvider } from "./context/auth";
 import { AuthRoute } from "./context/AuthRoute";
 import { ProtectedRoute } from "./context/ProtectedRoute";

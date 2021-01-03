@@ -12,8 +12,8 @@ import {
   Message,
   Transition,
 } from "semantic-ui-react";
-import DeleteButton from "./DeleteButton";
-import { LikeButton } from "./LikeButton";
+import DeleteButton from "../components/DeleteButton";
+import { LikeButton } from "../components/LikeButton";
 import moment from "moment";
 import { useMutation, useQuery } from "@apollo/client";
 import { useForm } from "../utils/hooks";
@@ -29,14 +29,20 @@ export const SinglePost = ({ history, match }) => {
   });
   const { user, logout } = useContext(AuthContext);
 
-  const [addComment] = useMutation(POST_COMMENT, {
+  const [
+    addComment,
+    { loading: commentLoading, error: commentError },
+  ] = useMutation(POST_COMMENT, {
     onError(error) {
+      console.log(JSON.stringify(error, null, 2));
       if (error.message.includes("token")) {
         logout();
         history.push("/login");
       }
     },
   });
+  console.log("error comment", commentError?.message);
+
   const { handleSubmit, handleInput, value, error: formError } = useForm(
     {
       body: "",
@@ -65,6 +71,7 @@ export const SinglePost = ({ history, match }) => {
       },
     });
   }
+
   if (loading) return <Loader size="large" />;
   if (error)
     return (
@@ -160,12 +167,19 @@ export const SinglePost = ({ history, match }) => {
                 error={formError.body}
               />
               <Form.Button
-                disabled={!value.body.length}
+                disabled={commentLoading || !value.body.length}
                 icon="send"
                 size="large"
                 color="blue"
                 content="Send"
+                loading={commentLoading}
               />
+              {commentError?.message?.includes("Failed to fetch") && (
+                <Message
+                  negative
+                  content="Network error, check your internet connextion and try again."
+                />
+              )}
             </Form>
           )}
 
