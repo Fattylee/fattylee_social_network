@@ -19,6 +19,7 @@ import { AuthContext } from "../context/auth";
 import { FETCH_A_POST } from "../utils/query";
 import { Link } from "react-router-dom";
 import { CommentForm } from "../components/CommentForm";
+import { NetworkMessage } from "../components/NetworkMessage";
 
 export const SinglePost = ({ history, match }) => {
   const { data, loading, error } = useQuery(FETCH_A_POST, {
@@ -28,15 +29,8 @@ export const SinglePost = ({ history, match }) => {
   });
   const { user } = useContext(AuthContext);
 
-  if (loading) return <Loader size="large" />;
-  if (error)
-    return (
-      <Message
-        error
-        icon="fire extinguisher"
-        content={JSON.stringify(error, null, 2)}
-      />
-    );
+  if (loading) return <Loader active size="massive" />;
+  if (error) return <NetworkMessage history={history} />;
 
   if (!data.post)
     return (
