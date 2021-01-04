@@ -9,7 +9,7 @@ export const useForm = (initialValue, cb) => {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     if (cb) cb();
   };
 

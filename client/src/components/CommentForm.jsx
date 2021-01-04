@@ -19,7 +19,6 @@ export const CommentForm = ({ history, match }) => {
       }
     },
   });
-  console.log("error comment", commentError?.message);
 
   const { handleSubmit, handleInput, value, error: formError } = useForm(
     {

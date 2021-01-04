@@ -79,7 +79,11 @@ export const validatePostID = (data) => {
 };
 
 export const validateCommentData = (data) => {
-  const { error, value } = postIdSchema.validate(data, validateOption);
+  const { error, value } = postIdSchema
+    .keys({
+      body: Joi.string().trim().required(),
+    })
+    .validate(data, validateOption);
 
   throwError(error);
   return value;
@@ -98,5 +102,3 @@ export const validateCommentDeleteData = (data) => {
   throwError(error);
   return value;
 };
-
-//127 b4

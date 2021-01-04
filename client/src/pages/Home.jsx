@@ -11,11 +11,13 @@ export const Home = (props) => {
   const screen = useViewpoint();
   const { user } = useContext(AuthContext);
   const { loading, data: { posts } = {}, error } = useQuery(FETCH_POSTS);
+
   if (error) return <h1>Error page</h1>;
+
   return (
     <Grid fluid="true">
       <Grid.Row centered>
-        {/* <Icon name="user" /> */}
+        {/* <Icon name="write" /> */}
         <h2>Recent posts</h2>
       </Grid.Row>
 

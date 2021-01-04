@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { LikeButton } from "./LikeButton";
 import DeleteButton from "./DeleteButton";
 import { MyPopup } from "./MyPopup";
+import { EditButton } from "./EditButton";
 
 export const Post = ({
   post: { id, body, commentCount, likeCount, username, createdAt, likes },
@@ -33,7 +34,7 @@ export const Post = ({
               </Label>
             </Button>
           </MyPopup>
-
+          <EditButton username={username} post={{ id, body }} />
           <DeleteButton
             postOrComment={{ owner: username, postId: id }}
             history={history}

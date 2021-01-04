@@ -11,25 +11,28 @@ import { Login } from "./pages/Login";
 import { NotFound } from "./pages/NotFound";
 import { Register } from "./pages/Register";
 import ApolloProvider from "./utils/apollo";
+import { FormProvider } from "./context/postForm";
 
 const App = () => {
   return (
     <ApolloProvider>
       <AuthProvider>
-        <Router>
-          <Container>
-            <Header />
-            <Switch>
-              <Route exact path="/" component={Home} />
-              {/* testing only */}
-              <ProtectedRoute exact path="/posts" component={Home} />
-              <Route exact path="/posts/:postId" component={SinglePost} />
-              <AuthRoute exact path="/login" component={Login} />
-              <AuthRoute exact path="/register" component={Register} />
-              <Route component={NotFound} />
-            </Switch>
-          </Container>
-        </Router>
+        <FormProvider>
+          <Router>
+            <Container>
+              <Header />
+              <Switch>
+                <Route exact path="/" component={Home} />
+                {/* testing only */}
+                <ProtectedRoute exact path="/posts" component={Home} />
+                <Route exact path="/posts/:postId" component={SinglePost} />
+                <AuthRoute exact path="/login" component={Login} />
+                <AuthRoute exact path="/register" component={Register} />
+                <Route component={NotFound} />
+              </Switch>
+            </Container>
+          </Router>
+        </FormProvider>
       </AuthProvider>
     </ApolloProvider>
   );
