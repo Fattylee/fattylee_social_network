@@ -9,118 +9,94 @@ const formatError = (error) =>
 
 const validateOption = { abortEarly: false, errors: { wrap: { label: "" } } };
 
-export const validateRegisterData = (data) => {
-  const { error, value } = Joi.object({
-    username: Joi.string().min(3).max(20).required(),
-    password: Joi.string().min(8).max(20).required(),
-    confirm_password: Joi.any()
-      .valid(Joi.ref("password"))
-      .options({
-        messages: { "any.only": "{{#label}} must match password" },
-      }),
-    email: Joi.string().email().required(),
-  }).validate(data, validateOption);
-
+const throwError = (error) => {
   if (error)
     throw new apolloServer.UserInputError("Errors", {
       errors: formatError(error),
     });
+};
 
+const postIdSchema = Joi.object({
+  postId: Joi.string()
+    .pattern(/[0-9a-f]{24}/)
+    .message("Invalid post id")
+    .required(),
+});
+
+const loginSchema = Joi.object({
+  username: Joi.string().trim().min(3).max(20).required(),
+  password: Joi.string().min(8).max(20).required(),
+});
+
+export const validateRegisterData = (data) => {
+  const { error, value } = loginSchema
+    .keys({
+      confirm_password: Joi.any()
+        .valid(Joi.ref("password"))
+        .options({
+          messages: { "any.only": "{{#label}} must match password" },
+        }),
+      email: Joi.string().email().required(),
+    })
+    .validate(data, validateOption);
+
+  throwError(error);
   return value;
 };
 
 export const validateLoginData = (data) => {
-  const { error, value } = Joi.object({
-    username: Joi.string().min(3).max(20).required(),
-    password: Joi.string().min(8).max(20).required(),
-  }).validate(data, validateOption);
+  const { error, value } = loginSchema.validate(data, validateOption);
 
-  if (error)
-    throw new apolloServer.UserInputError("Errors", {
-      errors: formatError(error),
-    });
-
+  throwError(error);
   return value;
 };
 
 export const validatePostData = (data) => {
   const { error, value } = Joi.object({
-    body: Joi.string().min(3).required(),
+    body: Joi.string().trim().min(3).required(),
   }).validate(data, validateOption);
 
-  if (error)
-    throw new apolloServer.UserInputError("Errors", {
-      errors: formatError(error),
-    });
-
+  throwError(error);
   return value;
 };
+
 export const validateEditPostData = (data) => {
-  const { error, value } = Joi.object({
-    postId: Joi.string()
-      .pattern(/[0-9a-f]{24}/)
-      .message("Invalid post id")
-      .required(),
-    body: Joi.string().min(3).required(),
-  }).validate(data, validateOption);
+  const { error, value } = postIdSchema
+    .keys({
+      body: Joi.string().trim().min(3),
+    })
+    .validate(data, validateOption);
 
-  if (error)
-    throw new apolloServer.UserInputError("Errors", {
-      errors: formatError(error),
-    });
-
+  throwError(error);
   return value;
 };
 
 export const validatePostID = (data) => {
-  const { error, value } = Joi.object({
-    postId: Joi.string()
-      .pattern(/[0-9a-f]{24}/)
-      .message("Invalid post id")
-      .required(),
-  }).validate(data, validateOption);
+  const { error, value } = postIdSchema.validate(data, validateOption);
 
-  if (error)
-    throw new apolloServer.UserInputError("Errors", {
-      errors: formatError(error),
-    });
-
+  throwError(error);
   return value;
 };
 
 export const validateCommentData = (data) => {
-  const { error, value } = Joi.object({
-    postId: Joi.string()
-      .pattern(/[0-9a-f]{24}/)
-      .message("Invalid post id")
-      .required(),
-    body: Joi.string().required(),
-  }).validate(data, validateOption);
+  const { error, value } = postIdSchema.validate(data, validateOption);
 
-  if (error)
-    throw new apolloServer.UserInputError("Errors", {
-      errors: formatError(error),
-    });
-
+  throwError(error);
   return value;
 };
 
 export const validateCommentDeleteData = (data) => {
-  const { error, value } = Joi.object({
-    postId: Joi.string()
-      .pattern(/[0-9a-f]{24}/)
-      .message("Invalid post id")
-      .required(),
-    commentId: Joi.string()
-      .pattern(/[0-9a-f]{24}/)
-      .message("Invalid comment id")
-      .required(),
-  }).validate(data, validateOption);
+  const { error, value } = postIdSchema
+    .keys({
+      commentId: Joi.string()
+        .pattern(/[0-9a-f]{24}/)
+        .message("Invalid comment id")
+        .required(),
+    })
+    .validate(data, validateOption);
 
-  if (error)
-    throw new apolloServer.UserInputError("Errors", {
-      errors: formatError(error),
-    });
-
+  throwError(error);
   return value;
 };
+
+//127 b4

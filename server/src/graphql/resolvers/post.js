@@ -27,7 +27,8 @@ export const postResolver = {
       return ctx.Post.create({ body, username: user.username, user: user.id });
     },
     async editPost(_, { postId, body }, ctx) {
-      validateEditPostData({ postId, body });
+      const value = validateEditPostData({ postId, body });
+      body = value.body;
 
       const user = authChecker(ctx);
 
@@ -39,7 +40,7 @@ export const postResolver = {
         throw new apolloServer.ForbiddenError(
           `You are not allowed to edit postId '${postId}'`
         );
-      post.body = body;
+      if (body) post.body = body;
 
       return post.save();
     },
