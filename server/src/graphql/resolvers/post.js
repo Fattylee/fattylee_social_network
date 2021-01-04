@@ -1,6 +1,10 @@
 import apolloServer from "apollo-server";
 import { authChecker } from "../../utils/authChecker.js";
-import { validatePostData, validatePostID } from "../../utils/validator.js";
+import {
+  validateEditPostData,
+  validatePostData,
+  validatePostID,
+} from "../../utils/validator.js";
 
 export const postResolver = {
   Query: {
@@ -21,6 +25,23 @@ export const postResolver = {
       const user = authChecker(ctx);
 
       return ctx.Post.create({ body, username: user.username, user: user.id });
+    },
+    async editPost(_, { postId, body }, ctx) {
+      validateEditPostData({ postId, body });
+
+      const user = authChecker(ctx);
+
+      const post = await ctx.Post.findById(postId);
+
+      if (!post) throw new Error("Post not found");
+
+      if (post.username !== user.username)
+        throw new apolloServer.ForbiddenError(
+          `You are not allowed to edit postId '${postId}'`
+        );
+      post.body = body;
+
+      return post.save();
     },
     async deletePost(_, { postId }, ctx) {
       validatePostID({ postId });
