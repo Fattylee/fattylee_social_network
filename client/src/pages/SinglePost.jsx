@@ -20,6 +20,7 @@ import { FETCH_A_POST } from "../utils/query";
 import { Link } from "react-router-dom";
 import { CommentForm } from "../components/CommentForm";
 import { NetworkMessage } from "../components/NetworkMessage";
+import { EditButton } from "../components/EditButton";
 
 export const SinglePost = ({ history, match }) => {
   const { data, loading, error } = useQuery(FETCH_A_POST, {
@@ -87,6 +88,11 @@ export const SinglePost = ({ history, match }) => {
                     {commentCount}
                   </Label>
                 </Button>
+                <EditButton
+                  username={username}
+                  post={{ id, body }}
+                  history={history}
+                />
                 <DeleteButton
                   postOrComment={{ owner: username, postId: id }}
                   history={history}

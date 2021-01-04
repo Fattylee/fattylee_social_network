@@ -15,7 +15,11 @@ export const PostForm = ({ history }) => {
   const { setError, error, setValue, value, handleInput } = useContext(
     FormContext
   );
-
+  React.useEffect(() => {
+    if (value?.id) {
+      document.querySelector("#textArea")?.focus();
+    }
+  }, [value]);
   const [addNewPost, { loading }] = useMutation(
     !value.id ? CREATE_POST : EDIT_POST,
     {
@@ -81,6 +85,15 @@ export const PostForm = ({ history }) => {
       >
         {!value.id ? "Add" : "Edit"} post
       </Button>
+      <Button
+        content="Cancel"
+        disabled={!value.body.length}
+        color="teal"
+        type="button"
+        onClick={() => {
+          setValue({ body: "", id: "" });
+        }}
+      />
     </Form>
   );
 };

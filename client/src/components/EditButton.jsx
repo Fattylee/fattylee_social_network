@@ -3,7 +3,7 @@ import { Button } from "semantic-ui-react";
 import { AuthContext } from "../context/auth";
 import { FormContext } from "../context/postForm";
 
-export const EditButton = ({ username, post: { id, body } }) => {
+export const EditButton = ({ username, post: { id, body }, history }) => {
   const { setValue } = useContext(FormContext);
   const { user } = useContext(AuthContext);
 
@@ -15,7 +15,9 @@ export const EditButton = ({ username, post: { id, body } }) => {
           color="blue"
           onClick={() => {
             setValue({ body, id });
-            document.querySelector("#textArea")?.focus();
+            if (history) {
+              history.push("/");
+            }
           }}
         />
       )}
