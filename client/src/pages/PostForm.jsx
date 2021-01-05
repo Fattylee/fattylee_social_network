@@ -19,7 +19,10 @@ export const PostForm = ({ history }) => {
 
   React.useEffect(() => {
     if (value?.id) {
-      textArea.current.querySelector("textarea")?.focus();
+      const box = textArea.current.querySelector("textarea");
+      const len = box.value.length;
+      box?.focus();
+      box?.setSelectionRange(len, len);
     }
   }, [value]);
   const [addNewPost, { loading }] = useMutation(

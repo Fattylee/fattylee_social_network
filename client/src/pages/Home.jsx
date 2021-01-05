@@ -18,7 +18,6 @@ export const Home = (props) => {
       <Grid.Row centered>
         {/* <Icon name="write" /> */}
         <h2 onClick={() => {}}>Recent posts</h2>
-        <Form></Form>
       </Grid.Row>
 
       <Grid.Row columns={screen === "mobile" ? 1 : screen === "tablet" ? 2 : 3}>
