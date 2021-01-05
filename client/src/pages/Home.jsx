@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 import React, { useContext } from "react";
-import { Form, Grid, Icon, Loader, Transition } from "semantic-ui-react";
+import { Grid, Loader, Transition } from "semantic-ui-react";
 import { Post } from "../components/Post";
 import { AuthContext } from "../context/auth";
 import { useViewpoint } from "../utils/hooks";
@@ -17,7 +17,7 @@ export const Home = (props) => {
     <Grid fluid="true">
       <Grid.Row centered>
         {/* <Icon name="write" /> */}
-        <h2 onClick={() => {}}>Recent posts</h2>
+        <h2>Recent posts</h2>
       </Grid.Row>
 
       <Grid.Row columns={screen === "mobile" ? 1 : screen === "tablet" ? 2 : 3}>

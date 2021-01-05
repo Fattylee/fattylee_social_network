@@ -47,3 +47,21 @@ button h2 {
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+.blink {
+  color: white;
+  animation: baba 1s linear 0s 2 both;
+  /* animation-name: baba;
+  animation-duration: 1s;
+  animation-iteration-count: infinite; */
+}
+
+@keyframes baba {
+  from {
+    opacity: 0.1;
+    /* background-color: yellow; */
+  }
+  to {
+    opacity: 1;
+  }
+}

@@ -1,5 +1,5 @@
 import { useMutation } from "@apollo/client";
-import React, { useContext, useRef } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { Button, Form, Ref } from "semantic-ui-react";
 import { AuthContext } from "../context/auth";
 import { FormContext } from "../context/postForm";
@@ -17,7 +17,7 @@ export const PostForm = ({ history }) => {
   );
   const textArea = useRef(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (value?.id) {
       const box = textArea.current.querySelector("textarea");
       const len = box.value.length;
@@ -59,7 +59,7 @@ export const PostForm = ({ history }) => {
             },
           });
         } else {
-          console.log("edit block");
+          focusAndBlink(value);
         }
         setError({});
         setValue(initialValue);
@@ -104,3 +104,13 @@ export const PostForm = ({ history }) => {
     </Form>
   );
 };
+
+function focusAndBlink(value) {
+  const updatedPost = document.getElementById(value.id);
+  updatedPost?.querySelector("button")?.focus();
+  updatedPost?.classList.add("my-flash");
+  setTimeout(() => {
+    // remove animation after 3s
+    updatedPost?.classList.remove("my-flash");
+  }, 3000);
+}

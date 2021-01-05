@@ -12,7 +12,7 @@ export const Post = ({
   history,
 }) => {
   return (
-    <Card fluid>
+    <Card fluid id={id}>
       <Card.Content>
         <Image floated="right" size="mini" src="assets/img/adam.jpg" />
         <Card.Header>{username}</Card.Header>
