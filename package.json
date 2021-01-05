@@ -10,7 +10,7 @@
   },
   "scripts": {
     "start": "node server/src",
-    "start:dev": "nodemon server/src",
+    "start:dev": "nodemon server/src -w server -i client",
     "start:client": "cd client && yarn start",
     "start:client:build": "cd client && yarn build"
   },
@@ -25,12 +25,12 @@
   "author": "fatai balogun",
   "license": "ISC",
   "dependencies": {
-    "apollo-server": "^2.19.0",
+    "apollo-server": "^2.19.1",
     "bcryptjs": "^2.4.3",
     "dotenv": "^8.2.0",
     "graphql": "^15.4.0",
     "joi": "^17.3.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.11.8"
+    "mongoose": "^5.11.10"
   }
 }

@@ -18,13 +18,19 @@ export const postResolver = {
     },
   },
   Mutation: {
-    createPost(_, { body }, ctx) {
-      console.log("createPost");
+    async createPost(_, { body }, ctx) {
       validatePostData({ body });
 
       const user = authChecker(ctx);
 
-      return ctx.Post.create({ body, username: user.username, user: user.id });
+      const newPost = await ctx.Post.create({
+        body,
+        username: user.username,
+        user: user.id,
+      });
+
+      ctx.pubSub.publish("NEW_POST", { newPost });
+      return newPost;
     },
     async editPost(_, { postId, body }, ctx) {
       const value = validateEditPostData({ postId, body });
@@ -69,7 +75,7 @@ export const postResolver = {
 
       const post = await ctx.Post.findById(postId);
 
-      if (!post) throw new apolloServer.UserInputError("Post not found");
+      if (!post) throw new Error("Post not found");
 
       const like = post.likes.find((like) => like.username === user.username);
 
@@ -79,6 +85,21 @@ export const postResolver = {
         post.likes.push({ username: user.username });
       }
       return post.save();
+    },
+  },
+  Subscription: {
+    newPost: {
+      subscribe(_, __, ctx) {
+        return ctx.pubSub.asyncIterator("NEW_POST");
+      },
+    },
+    comment: {
+      async subscribe(_, { postId }, { Post, pubSub }) {
+        const post = await Post.findById(postId);
+        if (!post) throw new Error("Post not found");
+
+        return pubSub.asyncIterator(`comment ${postId}`);
+      },
     },
   },
 };

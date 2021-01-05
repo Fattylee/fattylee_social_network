@@ -21,18 +21,24 @@ export const commentResolver = {
         username,
         createdAt: new Date().toISOString(),
       });
-      return post.save();
+      await post.save();
+
+      ctx.pubSub.publish(`comment ${postId}`, {
+        comment: post,
+      });
+
+      return post;
     },
     async deleteComment(_, { postId, commentId }, ctx) {
       validateCommentDeleteData({ commentId, postId });
       const user = authChecker(ctx);
       const post = await ctx.Post.findById(postId);
 
-      if (!post) throw new apolloServer.UserInputError("Post not found");
+      if (!post) throw new Error("Post not found");
 
       const comment = post.comments.find((cm) => cm._id == commentId);
 
-      if (!comment) throw new apolloServer.UserInputError("Comment not found");
+      if (!comment) throw new Error("Comment not found");
 
       if (comment.username !== user.username)
         throw new apolloServer.AuthenticationError("Action not allowed");

@@ -64,4 +64,8 @@ export default gql`
     deleteComment(postId: ID!, commentId: ID!): String!
     likePost(postId: ID!): Post!
   }
+  type Subscription {
+    newPost: Post!
+    comment(postId: ID!): Post!
+  }
 `;

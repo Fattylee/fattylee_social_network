@@ -8,12 +8,13 @@ import Post from "./models/post.js";
 import User from "./models/user.js";
 const { MONGODB, PORT } = config;
 
-const { ApolloServer } = apolloServer;
+const { ApolloServer, PubSub } = apolloServer;
 
+const pubSub = new PubSub();
 const app = new ApolloServer({
   typeDefs,
   resolvers,
-  context: ({ req, res }) => ({ req, res, User, Post }),
+  context: ({ req, res }) => ({ req, res, User, Post, pubSub }),
 });
 
 mongoose

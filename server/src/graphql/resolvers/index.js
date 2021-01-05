@@ -52,4 +52,7 @@ export default {
     ...postResolver.Mutation,
     ...commentResolver.Mutation,
   },
+  Subscription: {
+    ...postResolver.Subscription,
+  },
 };
