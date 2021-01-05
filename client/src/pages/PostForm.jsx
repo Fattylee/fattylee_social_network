@@ -1,6 +1,6 @@
 import { useMutation } from "@apollo/client";
-import React, { useContext } from "react";
-import { Button, Form } from "semantic-ui-react";
+import React, { useContext, useRef } from "react";
+import { Button, Form, Ref } from "semantic-ui-react";
 import { AuthContext } from "../context/auth";
 import { FormContext } from "../context/postForm";
 import { CREATE_POST, EDIT_POST, FETCH_POSTS } from "../utils/query";
@@ -15,9 +15,11 @@ export const PostForm = ({ history }) => {
   const { setError, error, setValue, value, handleInput } = useContext(
     FormContext
   );
+  const textArea = useRef(null);
+
   React.useEffect(() => {
     if (value?.id) {
-      document.querySelector("#textArea")?.focus();
+      textArea.current.querySelector("textarea")?.focus();
     }
   }, [value]);
   const [addNewPost, { loading }] = useMutation(
@@ -69,15 +71,17 @@ export const PostForm = ({ history }) => {
 
   return (
     <Form loading={loading} size="big" onSubmit={submitPost}>
-      <Form.TextArea
-        label="What's on your mind?"
-        placeholder="What's happening?"
-        name="body"
-        value={value.body}
-        onChange={handleInput}
-        error={error.body}
-        id="textArea"
-      />
+      <Ref innerRef={textArea}>
+        <Form.TextArea
+          label="What's on your mind?"
+          placeholder="What's happening?"
+          name="body"
+          value={value.body}
+          onChange={handleInput}
+          error={error.body}
+          id="textArea"
+        />
+      </Ref>
       <Button
         loading={loading}
         disabled={loading || !value.body.length}

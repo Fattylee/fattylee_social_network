@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 import React, { useContext } from "react";
-import { Grid, Icon, Loader, Transition } from "semantic-ui-react";
+import { Form, Grid, Icon, Loader, Transition } from "semantic-ui-react";
 import { Post } from "../components/Post";
 import { AuthContext } from "../context/auth";
 import { useViewpoint } from "../utils/hooks";
@@ -13,12 +13,12 @@ export const Home = (props) => {
   const { loading, data: { posts } = {}, error } = useQuery(FETCH_POSTS);
 
   if (error) return <h1>Error page</h1>;
-
   return (
     <Grid fluid="true">
       <Grid.Row centered>
         {/* <Icon name="write" /> */}
-        <h2>Recent posts</h2>
+        <h2 onClick={() => {}}>Recent posts</h2>
+        <Form></Form>
       </Grid.Row>
 
       <Grid.Row columns={screen === "mobile" ? 1 : screen === "tablet" ? 2 : 3}>
