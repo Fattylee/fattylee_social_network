@@ -7,10 +7,11 @@ import { MyPopup } from "./MyPopup";
 export const CommentButton = ({ id, commentCount }) => {
   const breakPoint = useViewpoint();
   const btnSize = breakPoint === "mobile" ? "tiny" : "medium";
+  const linkTo = window.location.pathname === "/" && `posts/${id}`;
   return (
     <MyPopup content="comments on a post">
       <Button size={btnSize} as="div" labelPosition="right">
-        <Button size={btnSize} as={Link} to={`posts/${id}`} basic color="blue">
+        <Button size={btnSize} as={Link} to={linkTo} basic color="blue">
           <Icon name="comments" />
         </Button>
         <Label size={btnSize} as="a" basic color="blue" pointing="left">
