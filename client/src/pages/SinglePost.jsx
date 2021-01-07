@@ -21,6 +21,7 @@ import { Link } from "react-router-dom";
 import { CommentForm } from "../components/CommentForm";
 import { NetworkMessage } from "../components/NetworkMessage";
 import { EditButton } from "../components/EditButton";
+import { CommentButton } from "../components/CommentButton";
 
 export const SinglePost = ({ history, match }) => {
   const { data, loading, error } = useQuery(FETCH_A_POST, {
@@ -80,14 +81,7 @@ export const SinglePost = ({ history, match }) => {
             <Card.Content extra>
               <div>
                 <LikeButton post={{ id, likes, likeCount }} history={history} />
-                <Button as="div" labelPosition="right">
-                  <Button basic color="blue">
-                    <Icon name="comments" />
-                  </Button>
-                  <Label as="a" basic color="blue" pointing="left">
-                    {commentCount}
-                  </Label>
-                </Button>
+                <CommentButton commentCount={commentCount} id={id} />
                 <EditButton
                   username={username}
                   post={{ id, body }}
