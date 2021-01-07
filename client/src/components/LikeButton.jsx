@@ -10,10 +10,13 @@ import {
 } from "semantic-ui-react";
 
 import { AuthContext } from "../context/auth";
+import { useViewpoint } from "../utils/hooks";
 import { LIKE_POST } from "../utils/query";
 
 export const LikeButton = ({ post: { likes, id, likeCount }, history }) => {
   const [visibility, setVisibility] = useState(true);
+  const breakPoint = useViewpoint();
+  const btnSize = breakPoint === "mobile" ? "tiny" : "medium";
 
   const { user, logout } = useContext(AuthContext);
   const [likePost] = useMutation(LIKE_POST, {
@@ -41,9 +44,9 @@ export const LikeButton = ({ post: { likes, id, likeCount }, history }) => {
     : true;
 
   return (
-    <Button as="div" labelPosition="right">
+    <Button size={btnSize} as="div" labelPosition="right">
       <Transition animation="shake" visible={visibility}>
-        <Button basic={isLike} color="teal" onClick={handleLike}>
+        <Button size={btnSize} basic={isLike} color="teal" onClick={handleLike}>
           <Icon name="heart" />
         </Button>
       </Transition>
@@ -61,7 +64,7 @@ export const LikeButton = ({ post: { likes, id, likeCount }, history }) => {
           </List>
         }
         trigger={
-          <Label as="a" basic color="teal" pointing="left">
+          <Label size={btnSize} as="a" basic color="teal" pointing="left">
             {likeCount}
           </Label>
         }

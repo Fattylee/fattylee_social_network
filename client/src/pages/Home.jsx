@@ -10,7 +10,15 @@ import { PostForm } from "./PostForm";
 export const Home = (props) => {
   const screen = useViewpoint();
   const { user } = useContext(AuthContext);
-  const { loading, data: { posts } = {}, error } = useQuery(FETCH_POSTS);
+  const { loading, data: { posts } = {}, error } = useQuery(FETCH_POSTS, {
+    // pollInterval: 500,
+  });
+  React.useEffect(() => {
+    console.log("rendering from Home page");
+    return () => {
+      console.log("unmounting home page");
+    };
+  });
 
   if (error) return <h1>Error page</h1>;
   return (

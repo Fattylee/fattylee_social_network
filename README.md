@@ -1,6 +1,6 @@
 # Welcome to Sayurs
 
-[Sayurs Frontend](https://fattylee-social-network.netlify.app/)
+[Sayurs Frontend](https://fattylee-sayurs.netlify.app/)
 
 [Sayurs Backend](https://fattylee-social-network.herokuapp.com/)
 

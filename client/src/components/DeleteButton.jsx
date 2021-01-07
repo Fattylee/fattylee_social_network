@@ -2,6 +2,7 @@ import { useMutation } from "@apollo/client";
 import React, { useContext, useState } from "react";
 import { Button, Confirm } from "semantic-ui-react";
 import { AuthContext } from "../context/auth";
+import { useViewpoint } from "../utils/hooks";
 import {
   DELETE_COMMENT,
   DELETE_POST,
@@ -13,6 +14,7 @@ const DeleteButton = ({
   postOrComment: { owner, postId, commentId },
   history,
 }) => {
+  const breakPoint = useViewpoint();
   const { user, logout } = useContext(AuthContext);
   const [toggleVisibility, setToggleVisibility] = useState(false);
 
@@ -80,6 +82,7 @@ const DeleteButton = ({
           open={toggleVisibility}
         />
         <Button
+          size={breakPoint === "mobile" ? "tiny" : "medium"}
           onClick={() => setToggleVisibility(true)}
           color="red"
           basic

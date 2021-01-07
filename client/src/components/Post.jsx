@@ -1,11 +1,12 @@
 import React from "react";
-import { Button, Card, Icon, Image, Label } from "semantic-ui-react";
+import { Button, Card, Icon, Image, Label, Popup } from "semantic-ui-react";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import { LikeButton } from "./LikeButton";
 import DeleteButton from "./DeleteButton";
 import { MyPopup } from "./MyPopup";
 import { EditButton } from "./EditButton";
+import { CommentButton } from "./CommentButton";
 
 export const Post = ({
   post: { id, body, commentCount, likeCount, username, createdAt, likes },
@@ -16,24 +17,21 @@ export const Post = ({
       <Card.Content>
         <Image floated="right" size="mini" src="assets/img/adam.jpg" />
         <Card.Header>{username}</Card.Header>
-        <Card.Meta as={Link} to={`/posts/${id}`}>
-          {moment(createdAt).fromNow(true)}
-        </Card.Meta>
+        <Popup
+          content="Click to visit post detailed page"
+          trigger={
+            <Card.Meta as={Link} to={`/posts/${id}`}>
+              {moment(createdAt).fromNow(true)}
+            </Card.Meta>
+          }
+        />
+
         <Card.Description>{body}</Card.Description>
       </Card.Content>
       <Card.Content extra>
         <div>
           <LikeButton post={{ id, likes, likeCount }} history={history} />
-          <MyPopup content="comments on a post">
-            <Button as="div" labelPosition="right">
-              <Button as={Link} to={`posts/${id}`} basic color="blue">
-                <Icon name="comments" />
-              </Button>
-              <Label as="a" basic color="blue" pointing="left">
-                {commentCount}
-              </Label>
-            </Button>
-          </MyPopup>
+          <CommentButton id={id} commentCount={commentCount} />
           <EditButton username={username} post={{ id, body }} />
           <DeleteButton
             postOrComment={{ owner: username, postId: id }}

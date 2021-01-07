@@ -129,3 +129,26 @@ export const LOGIN = gql`
     }
   }
 `;
+
+export const NEW_POST_SUB = gql`
+  subscription latestPost {
+    newPost {
+      id
+      body
+      commentCount
+      likeCount
+      username
+      createdAt
+      likes {
+        id
+        username
+      }
+      comments {
+        id
+        body
+        username
+        createdAt
+      }
+    }
+  }
+`;

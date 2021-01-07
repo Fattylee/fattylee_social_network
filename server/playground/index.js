@@ -1,46 +1,24 @@
-/*
-DESCRIPTION:
-We are making a Social Media Character Counter! We want to display the available characters LEFT.
-Using the Keydown event should help you here. When the characters reach 20 and below, we want them to turn red. So we will use Javascript to add that styling to it. If the characters drop below 0, we want the button to be disabled BUT if there are only 0 characters left, we should still be able to tweet.
-
-Keydown, addEventListeners, add and remove a class
-
-Tips:
-1. We want to create our variables first
-2. Add the event listener
-3. Look in the CSS to see what could be used to disable the button
-4. Create conditions to check the count of the characters
-
-Let your imagination run wild! You can use the provided styling or you can take it to another level!
-Make sure you share your solution using the "Share solution!" button at the top!
-There will be multiple winners that I select!
-
-Follow me on twitter @DThompsonDev so you can find who who is selected! I hope it's YOU!
-
-*/
-const textArea = document.getElementById("string");
-const counterFooter = document.getElementById("counterFooter");
-const btn = document.getElementById("btn");
-
-textArea.addEventListener("keyup", (e) => {
-  const typedCharactersLength = e.target.value.length;
-
-  // update counter
-  counterFooter.innerHTML = `${140 - typedCharactersLength}/140`;
-
-  // display/remove warning errors
-  if (typedCharactersLength > 119) {
-    counterFooter.classList.add("warning");
-  } else {
-    counterFooter.classList.remove("warning");
-  }
-
-  // toggle disabled/enable button
-  if (typedCharactersLength > 140) {
-    btn.setAttribute("disabled", "true");
-    btn.className = "buttonDisabled";
-  } else {
-    btn.removeAttribute("disabled");
-    btn.className = "";
-  }
-});
+var Dog = /** @class */ (function () {
+    function Dog(breed, age, height) {
+        // this.age = age;
+        this.breed = breed;
+        this.height = height;
+    }
+    Dog.prototype.format = function () {
+        // this.breed = "puppy";
+        return "Dog breed is " + this.breed + ", age: " + this.height + " and height: " + this.height;
+    };
+    return Dog;
+}());
+var dog1 = new Dog("bulldog", 23, 11);
+var res = dog1.format();
+// dog1.breed = "baba";
+console.log(res);
+var man;
+man = { name: "abu", age: 12 };
+var nameFunc = function (obj) {
+    return obj;
+};
+var res2 = nameFunc({ name: "fatty", age: 11, isMarried: true });
+nameFunc("jsjs");
+res2;

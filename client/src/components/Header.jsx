@@ -1,7 +1,9 @@
+// import { useSubscription } from "@apollo/client";
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu } from "semantic-ui-react";
 import { AuthContext } from "../context/auth";
+// import { NEW_POST_SUB } from "../utils/query";
 
 export const Header = () => {
   const { user, logout } = useContext(AuthContext);
@@ -9,6 +11,7 @@ export const Header = () => {
     const pathname = window.location.pathname;
     return pathname === "/" ? "sayurs" : pathname.substr(1);
   });
+  // useSubscription(NEW_POST_SUB, { subscription() {} });
 
   const handleItemClick = (e, { name }) => {
     setActiveItem(name);
