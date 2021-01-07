@@ -16,6 +16,7 @@ const app = new ApolloServer({
   resolvers,
   context: ({ req, res }) => ({ req, res, User, Post, pubSub }),
   playground: true,
+  introspection: true,
 });
 
 mongoose
