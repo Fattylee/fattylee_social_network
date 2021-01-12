@@ -37,7 +37,7 @@ server.applyMiddleware({
   app,
   path: "/",
   cors: {
-    origin: ["http://localhost:3000", "https://fattylee-sayurs.netlify.app/"],
+    origin: "https://fattylee-sayurs.netlify.app/",
     credentials: true,
   },
 });
