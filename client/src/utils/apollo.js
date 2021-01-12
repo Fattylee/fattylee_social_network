@@ -4,13 +4,12 @@ import {
   InMemoryCache,
   HttpLink,
   concat,
-  createHttpLink,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import React from "react";
 
 const uri = process.env.REACT_APP_WEB_SERVER_URI;
-const link = createHttpLink({
+const link = new HttpLink({
   uri,
   credentials: "include",
 });
