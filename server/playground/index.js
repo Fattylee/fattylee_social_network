@@ -20,5 +20,13 @@ var nameFunc = function (obj) {
     return obj;
 };
 var res2 = nameFunc({ name: "fatty", age: 11, isMarried: true });
-nameFunc("jsjs");
+nameFunc({ name: "male" });
 res2;
+var abu = { id: "3", data: ["23", "4"] };
+var arr = [2, true, "string"];
+arr[2] = 23;
+arr.push(true);
+var arr2 = ["fake", 1];
+arr2.push(3, "etring");
+// arr2[1] = "sgha";
+console.log(arr2);

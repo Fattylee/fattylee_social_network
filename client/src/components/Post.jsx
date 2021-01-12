@@ -1,10 +1,9 @@
 import React from "react";
-import { Button, Card, Icon, Image, Label, Popup } from "semantic-ui-react";
+import { Card, Image, Popup } from "semantic-ui-react";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import { LikeButton } from "./LikeButton";
 import DeleteButton from "./DeleteButton";
-import { MyPopup } from "./MyPopup";
 import { EditButton } from "./EditButton";
 import { CommentButton } from "./CommentButton";
 

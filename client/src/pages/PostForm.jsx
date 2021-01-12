@@ -1,4 +1,4 @@
-import { useMutation } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 import React, { useContext, useEffect, useRef } from "react";
 import { Button, Form, Ref } from "semantic-ui-react";
 import { AuthContext } from "../context/auth";
@@ -25,6 +25,7 @@ export const PostForm = ({ history }) => {
       box?.setSelectionRange(len, len);
     }
   }, [value]);
+
   const [addNewPost, { loading }] = useMutation(
     !value.id ? CREATE_POST : EDIT_POST,
     {
@@ -47,9 +48,8 @@ export const PostForm = ({ history }) => {
         setError({ error: err.message });
       },
       update(cache, result) {
-        console.log("successful");
+        console.log(result);
         if (!value.id) {
-          console.log("post block");
           const data = cache.readQuery({ query: FETCH_POSTS });
 
           cache.writeQuery({
@@ -58,6 +58,27 @@ export const PostForm = ({ history }) => {
               posts: [result.data.createPost, ...data.posts],
             },
           });
+          // investigate later why it is not working
+          // cache.modify({
+          //   fields: {
+          //     posts(existingPosts = []) {
+          //       const newPostRef = cache.writeFragment({
+          //         data: result.data.createPost,
+          //         fragment: gql`
+          //           fragment newPost on Post {
+          //             id
+          //             body
+          //             createdAt
+          //             username
+          //             commentCount
+          //             likeCount
+          //           }
+          //         `,
+          //       });
+          //       return [newPostRef, ...existingPosts];
+          //     },
+          //   },
+          // });
         } else {
           focusAndBlink(value);
         }

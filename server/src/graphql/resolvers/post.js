@@ -20,7 +20,6 @@ export const postResolver = {
   Mutation: {
     async createPost(_, { body }, ctx) {
       validatePostData({ body });
-
       const user = authChecker(ctx);
 
       const newPost = await ctx.Post.create({

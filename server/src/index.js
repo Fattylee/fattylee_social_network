@@ -1,5 +1,7 @@
-import apolloServer from "apollo-server";
+import apolloServer from "apollo-server-express";
 import mongoose from "mongoose";
+import express from "express";
+import cookieParser from "cookie-parser";
 
 import resolvers from "./graphql/resolvers/index.js";
 import typeDefs from "./graphql/typeDefs.js";
@@ -10,13 +12,37 @@ const { MONGODB, PORT } = config;
 
 const { ApolloServer, PubSub } = apolloServer;
 
+const app = express();
 const pubSub = new PubSub();
-const app = new ApolloServer({
+
+const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: ({ req, res }) => ({ req, res, User, Post, pubSub }),
+  context: ({ req, res }) => {
+    return { req, res, User, Post, pubSub };
+  },
   playground: true,
   introspection: true,
+});
+
+app.use(cookieParser());
+
+app.use((req, res, next) => {
+  console.log(req.headers, "==========req.headers===============");
+  console.log(req.cookies, "==========req.cookies===============");
+  next();
+});
+
+server.applyMiddleware({
+  app,
+  path: "/",
+  cors: {
+    origin: [
+      "http://localhost:3000",
+      "https://fattylee-social-network.herokuapp.com/",
+    ],
+    credentials: true,
+  },
 });
 
 mongoose
@@ -27,7 +53,9 @@ mongoose
   })
   .then(() => {
     console.log("Connected to MONGODB");
-    return app.listen({ port: PORT });
+    app.listen({ port: PORT });
+    console.log(
+      `Sever is running: ${JSON.stringify(server.graphqlPath, null, 1)}`
+    );
   })
-  .then((res) => console.log(`Sever is running: ${res.url}`))
   .catch(console.error);

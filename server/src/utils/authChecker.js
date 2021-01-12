@@ -4,6 +4,7 @@ import { MY_SECRET } from "../config/index.js";
 
 export const authChecker = (context) => {
   const authHeader = context.req.headers.authorization;
+  console.log(authHeader);
 
   if (!authHeader)
     throw new apolloServer.AuthenticationError(
@@ -20,6 +21,7 @@ export const authChecker = (context) => {
   try {
     return jwt.verify(token, MY_SECRET);
   } catch (error) {
+    console.log("bad token");
     throw new apolloServer.AuthenticationError("Invalid/Expired token");
   }
 };

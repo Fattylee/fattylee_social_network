@@ -68,10 +68,14 @@ export const CREATE_POST = gql`
     createPost(body: $body) {
       id
       body
-      createdAt
       username
-      commentCount
       likeCount
+      commentCount
+      createdAt
+      likes {
+        username
+        id
+      }
     }
   }
 `;

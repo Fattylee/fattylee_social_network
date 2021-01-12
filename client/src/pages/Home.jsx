@@ -5,6 +5,7 @@ import { Post } from "../components/Post";
 import { AuthContext } from "../context/auth";
 import { useViewpoint } from "../utils/hooks";
 import { FETCH_POSTS } from "../utils/query";
+import { InputTextForm } from "./InputTextForm";
 import { PostForm } from "./PostForm";
 
 export const Home = (props) => {
@@ -26,6 +27,7 @@ export const Home = (props) => {
       <Grid.Row centered>
         {/* <Icon name="write" /> */}
         <h2>Recent posts</h2>
+        <InputTextForm />
       </Grid.Row>
 
       <Grid.Row columns={screen === "mobile" ? 1 : screen === "tablet" ? 2 : 3}>

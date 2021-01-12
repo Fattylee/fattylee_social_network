@@ -51,6 +51,15 @@ export default {
     ...userResolver.Mutation,
     ...postResolver.Mutation,
     ...commentResolver.Mutation,
+    testCookie(_, __, ctx) {
+      // console.log(ctx.res);
+      ctx.res.cookie("fatty", "loocer".repeat(5), {
+        // httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24 * 7, //7days
+        secure: false,
+      });
+      return Math.random();
+    },
   },
   Subscription: {
     ...postResolver.Subscription,

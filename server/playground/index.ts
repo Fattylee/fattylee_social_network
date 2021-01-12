@@ -32,5 +32,18 @@ const nameFunc = <T extends { name: string }>(obj: T) => {
   return obj;
 };
 const res2 = nameFunc({ name: "fatty", age: 11, isMarried: true });
-nameFunc("jsjs");
+nameFunc({ name: "male" });
 res2;
+interface Company<T> {
+  id: string;
+  data: T;
+}
+const abu: Company<string[]> = { id: "3", data: ["23", "4"] };
+const arr = [2, true, "string"];
+arr[2] = 23;
+arr.push(true);
+
+let arr2: [string, number] = ["fake", 1];
+arr2.push(3, "etring");
+// arr2[1] = "sgha";
+console.log(arr2);

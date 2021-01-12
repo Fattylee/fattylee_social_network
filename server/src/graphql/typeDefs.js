@@ -63,6 +63,7 @@ export default gql`
     createComment(postId: ID!, body: String!): Post!
     deleteComment(postId: ID!, commentId: ID!): String!
     likePost(postId: ID!): Post!
+    testCookie: Float
   }
   type Subscription {
     newPost: Post!

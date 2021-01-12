@@ -12,7 +12,7 @@ const { hash, compare } = bcrypt;
 
 export const userResolver = {
   Mutation: {
-    async login(parent, args, { User }, info) {
+    async login(parent, args, { User, res }, info) {
       const value = validateLoginData(args);
 
       const { username, password } = args;
@@ -23,6 +23,11 @@ export const userResolver = {
       if (!isValidPassword)
         throw new apolloServer.AuthenticationError("Invalid credentials");
 
+      res.cookie("fatty", "loocer".repeat(5), {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24 * 7, //7days
+        secure: false,
+      });
       return user;
     },
     async register(parent, args, { User }, info) {
