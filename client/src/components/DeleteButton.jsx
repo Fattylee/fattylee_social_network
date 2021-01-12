@@ -18,7 +18,7 @@ const DeleteButton = ({
   const { user, logout } = useContext(AuthContext);
   const [toggleVisibility, setToggleVisibility] = useState(false);
 
-  const [deletePostOrComment] = useMutation(
+  const [deletePostOrComment, { loading }] = useMutation(
     commentId ? DELETE_COMMENT : DELETE_POST,
     {
       variables: {
@@ -80,6 +80,7 @@ const DeleteButton = ({
           onConfirm={handleDelete}
           onCancel={() => setToggleVisibility(false)}
           open={toggleVisibility}
+          confirmButton={<Button content="OK" loading={loading} />}
         />
         <Button
           size={breakPoint === "mobile" ? "tiny" : "medium"}
