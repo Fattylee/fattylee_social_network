@@ -37,10 +37,7 @@ server.applyMiddleware({
   app,
   path: "/",
   cors: {
-    origin: [
-      "http://localhost:3000",
-      "https://fattylee-social-network.herokuapp.com/",
-    ],
+    origin: ["http://localhost:3000", "https://fattylee-sayurs.netlify.app/"],
     credentials: true,
   },
 });
