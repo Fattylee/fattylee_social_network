@@ -28,6 +28,7 @@ const server = new ApolloServer({
 app.use(cookieParser());
 
 app.use((req, res, next) => {
+  console.log(process.env.NODE_ENV, "===env===");
   console.log(req.headers, "==========req.headers===============");
   console.log(req.cookies, "==========req.cookies===============");
   next();
@@ -37,7 +38,10 @@ server.applyMiddleware({
   app,
   path: "/",
   cors: {
-    origin: "https://fattylee-sayurs.netlify.app/",
+    origin:
+      process.env.NODE_ENV === "production"
+        ? "https://fattylee-sayurs.netlify.app/"
+        : "http://localhost:3000",
     credentials: true,
   },
 });
