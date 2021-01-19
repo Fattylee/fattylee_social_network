@@ -1,5 +1,7 @@
 # Welcome to Sayurs
 
+## Sayurs is a platform where everyone is allowed to echo their voice.
+
 [Sayurs Frontend](https://fattylee-sayurs.netlify.app/)
 
 [Sayurs Backend](https://fattylee-social-network.herokuapp.com/)
