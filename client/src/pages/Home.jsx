@@ -1,6 +1,7 @@
 import { useQuery } from "@apollo/client";
 import React, { useContext } from "react";
 import { Grid, Loader, Transition } from "semantic-ui-react";
+import { FictionPage } from "../components/FictionPage";
 import { Post } from "../components/Post";
 import { AuthContext } from "../context/auth";
 import { useViewpoint } from "../utils/hooks";
@@ -13,12 +14,6 @@ export const Home = (props) => {
   const { loading, data: { posts } = {}, error } = useQuery(FETCH_POSTS, {
     // pollInterval: 500,
   });
-  React.useEffect(() => {
-    console.log("rendering from Home page");
-    return () => {
-      console.log("unmounting home page");
-    };
-  });
 
   if (error) return <h1>Error page</h1>;
   return (
@@ -26,6 +21,7 @@ export const Home = (props) => {
       <Grid.Row centered>
         {/* <Icon name="write" /> */}
         <h2>Recent posts</h2>
+        <FictionPage />
       </Grid.Row>
 
       <Grid.Row columns={screen === "mobile" ? 1 : screen === "tablet" ? 2 : 3}>

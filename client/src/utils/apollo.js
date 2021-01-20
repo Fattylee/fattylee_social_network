@@ -27,7 +27,35 @@ const authLink = setContext((_, { headers }) => {
 
 const client = new ApolloClient({
   link: concat(authLink, link),
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    // typePolicies: {
+    //   Query: {
+    //     fields: {
+    //       getPosts: {
+    //         merge: false,
+    //       },
+    //     },
+    //   },
+    //   Post: {
+    //     fields: {
+    //       comments: {
+    //         merge: false,
+    //         // merge(existing = [], incoming) {
+    //         //   console.log(existing, "===existing===");
+    //         //   console.log(incoming);
+    //         //   return [...existing, ...incoming];
+    //         // },
+    //       },
+    //       username: {
+    //         read(uname) {
+    //           // console.log(uname, "===from typePolicies===");
+    //           return uname.toUpperCase();
+    //         },
+    //       },
+    //     },
+    //   },
+    // },
+  }),
 });
 
 const AppProvider = (props) => {

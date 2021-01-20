@@ -24,3 +24,13 @@ export const UIContextProvider = (props) => {
     </UIContext.Provider>
   );
 };
+
+window.navigator.geolocation.getCurrentPosition(
+  (pos) => {
+    console.log(pos, "=pos========");
+  },
+  (err) => {
+    console.log("===============err==============");
+    console.error(err.message);
+  }
+);

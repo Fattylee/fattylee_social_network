@@ -48,37 +48,36 @@ export const PostForm = ({ history }) => {
         setError({ error: err.message });
       },
       update(cache, result) {
-        console.log(result);
         if (!value.id) {
-          const data = cache.readQuery({ query: FETCH_POSTS });
+          // const data = cache.readQuery({ query: FETCH_POSTS });
 
-          cache.writeQuery({
-            query: FETCH_POSTS,
-            data: {
-              posts: [result.data.createPost, ...data.posts],
-            },
-          });
-          // investigate later why it is not working
-          // cache.modify({
-          //   fields: {
-          //     posts(existingPosts = []) {
-          //       const newPostRef = cache.writeFragment({
-          //         data: result.data.createPost,
-          //         fragment: gql`
-          //           fragment newPost on Post {
-          //             id
-          //             body
-          //             createdAt
-          //             username
-          //             commentCount
-          //             likeCount
-          //           }
-          //         `,
-          //       });
-          //       return [newPostRef, ...existingPosts];
-          //     },
+          // cache.writeQuery({
+          //   query: FETCH_POSTS,
+          //   data: {
+          //     posts: [result.data.createPost, ...data.posts],
           //   },
           // });
+          // investigate later why it is not working
+          cache.modify({
+            fields: {
+              getPosts(existingPosts = []) {
+                const newPostRef = cache.writeFragment({
+                  data: result.data.createPost,
+                  fragment: gql`
+                    fragment newPost on Post {
+                      id
+                      body
+                      createdAt
+                      username
+                      commentCount
+                      likeCount
+                    }
+                  `,
+                });
+                return [newPostRef, ...existingPosts];
+              },
+            },
+          });
         } else {
           focusAndBlink(value);
         }
