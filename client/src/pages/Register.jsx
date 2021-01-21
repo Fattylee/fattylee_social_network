@@ -1,8 +1,8 @@
 import { gql, useMutation } from "@apollo/client";
 // import { setContext } from "apollo-link-context";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import { Card, Form, Grid, Header, Message } from "semantic-ui-react";
+import { Card, Form, Grid, Header, Icon, Message } from "semantic-ui-react";
 import { AuthContext } from "../context/auth";
 import { useForm } from "../utils/hooks";
 
@@ -23,6 +23,8 @@ export const Register = (props) => {
     handleSubmit,
     handleInput,
   } = useForm(initialValue, handleRegisterUser);
+  const [togglePassword, setTogglePassword] = useState(false);
+  const [toggleConfirmPassword, setToggleConfirmPassword] = useState(false);
 
   const [registerUser, { loading }] = useMutation(REGISTER, {
     update(_, { data: { register: userData } }) {
@@ -91,10 +93,16 @@ export const Register = (props) => {
                   />
                 </Form.Group>
                 <Form.Input
-                  type="password"
+                  type={togglePassword ? "text" : "password"}
                   name="password"
                   placeholder="Your password"
-                  icon="lock"
+                  icon={
+                    <Icon
+                      link
+                      name={togglePassword ? "eye" : "eye slash"}
+                      onClick={(e) => setTogglePassword(!togglePassword)}
+                    />
+                  }
                   error={error.password}
                   value={value.password}
                   onChange={handleInput}
@@ -102,10 +110,18 @@ export const Register = (props) => {
                   required={!!error.password}
                 />
                 <Form.Input
-                  type="password"
+                  type={toggleConfirmPassword ? "text" : "password"}
                   name="confirm_password"
                   placeholder="Confiirm password"
-                  icon="lock"
+                  icon={
+                    <Icon
+                      link
+                      name={toggleConfirmPassword ? "eye" : "eye slash"}
+                      onClick={(e) =>
+                        setToggleConfirmPassword(!toggleConfirmPassword)
+                      }
+                    />
+                  }
                   error={error.confirm_password}
                   onChange={handleInput}
                   value={value.confirm_password}

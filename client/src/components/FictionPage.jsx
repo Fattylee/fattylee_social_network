@@ -10,6 +10,24 @@ export const FictionPage = () => {
         const { color, bg } = isLightTheme ? light : dark;
         return (
           <>
+            <form
+              action="#"
+              onSubmit={(e) => {
+                e.preventDefault();
+                console.log(e.target.elements[0].value);
+                console.log(e.target.submit());
+              }}
+            >
+              <input
+                type="search"
+                min="5"
+                max="10"
+                // maxLength="2"
+                name="url"
+                id="urlId"
+              />
+              <input type="submit" value="Sumit" />
+            </form>
             <div
               style={{
                 border: "1px solid",

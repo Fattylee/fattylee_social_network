@@ -63,7 +63,6 @@ export const PostForm = ({ history }) => {
               getPosts(existingPosts = []) {
                 const newPostRef = cache.writeFragment({
                   data: result.data.createPost,
-
                   fragment: gql`
                     fragment newPost on Post {
                       id
