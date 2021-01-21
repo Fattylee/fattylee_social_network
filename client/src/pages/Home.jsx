@@ -1,7 +1,6 @@
 import { useQuery } from "@apollo/client";
 import React, { useContext } from "react";
 import { Grid, Loader, Transition } from "semantic-ui-react";
-import { FictionPage } from "../components/FictionPage";
 import { Post } from "../components/Post";
 import { AuthContext } from "../context/auth";
 import { useViewpoint } from "../utils/hooks";

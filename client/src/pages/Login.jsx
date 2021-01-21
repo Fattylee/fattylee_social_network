@@ -49,12 +49,10 @@ export const Login = (props) => {
       <Grid.Column>
         <Card raised fluid style={{ maxWidth: 700, margin: "auto" }}>
           <Card.Content>
-            <Header
-              textAlign="center"
-              content="Login to Account"
-              image="assets/img/sarah.jpg"
-            />
-
+            <div style={{ textAlign: "center" }}>
+              <Icon name="user" size="huge" textAlign="cente" />
+            </div>
+            <Header textAlign="center" content="Login to Account" size="huge" />
             <Form
               autoComplete="true"
               onSubmit={handleSubmit}

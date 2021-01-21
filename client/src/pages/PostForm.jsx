@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useRef } from "react";
 import { Button, Form, Ref } from "semantic-ui-react";
 import { AuthContext } from "../context/auth";
 import { FormContext } from "../context/postForm";
-import { CREATE_POST, EDIT_POST, FETCH_POSTS } from "../utils/query";
+import { CREATE_POST, EDIT_POST } from "../utils/query";
 
 const initialValue = {
   body: "",
