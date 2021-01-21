@@ -2,7 +2,15 @@ import { gql, useMutation } from "@apollo/client";
 // import { setContext } from "apollo-link-context";
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import { Card, Form, Grid, Header, Icon, Message } from "semantic-ui-react";
+import {
+  Card,
+  Form,
+  Grid,
+  Header,
+  Icon,
+  Image,
+  Message,
+} from "semantic-ui-react";
 import { AuthContext } from "../context/auth";
 import { useForm } from "../utils/hooks";
 
@@ -54,9 +62,17 @@ export const Register = (props) => {
               <Header
                 textAlign="center"
                 content="Register for a new Account"
-                image="assets/img/sarah.jpg"
+                image="assets/img/microphone.jpg"
+                size="huge"
               />
 
+              <Image
+                src="assets/img/sarah.jpg"
+                rounded
+                ui
+                verticalAlign="top"
+                avatar
+              />
               <Form
                 autoComplete="true"
                 onSubmit={handleSubmit}
