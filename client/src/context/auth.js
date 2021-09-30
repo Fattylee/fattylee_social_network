@@ -24,6 +24,7 @@ const AuthProvider = (props) => {
     const token = localStorage.getItem("jwtToken");
     if (token) {
       const decodedToken = decode(token);
+      console.log({ decodedToken, token });
       if (decodedToken.exp * 1000 < Date.now()) {
         localStorage.removeItem("jwtToken");
       } else {

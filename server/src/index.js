@@ -28,8 +28,8 @@ const server = new ApolloServer({
 app.use(cookieParser());
 
 app.use((req, res, next) => {
-  console.log(req.headers, "==========req.headers===============");
-  console.log(req.cookies, "==========req.cookies===============");
+  // console.log(req.headers, "==========req.headers===============");
+  // console.log(req.cookies, "==========req.cookies===============");
   next();
 });
 

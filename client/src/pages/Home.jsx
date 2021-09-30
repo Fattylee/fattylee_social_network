@@ -10,7 +10,11 @@ import { PostForm } from "./PostForm";
 export const Home = (props) => {
   const screen = useViewpoint();
   const { user } = useContext(AuthContext);
-  const { loading, data: { posts } = {}, error } = useQuery(FETCH_POSTS, {
+  const {
+    loading,
+    data: { posts } = {},
+    error,
+  } = useQuery(FETCH_POSTS, {
     // pollInterval: 500,
   });
 
@@ -18,9 +22,7 @@ export const Home = (props) => {
   return (
     <Grid fluid="true">
       <Grid.Row centered>
-        {/* <Icon name="write" /> */}
         <h2>Recent posts</h2>
-        {/* <FictionPage /> */}
       </Grid.Row>
 
       <Grid.Row columns={screen === "mobile" ? 1 : screen === "tablet" ? 2 : 3}>
@@ -33,13 +35,15 @@ export const Home = (props) => {
         {loading ? (
           <Loader active size="massive"></Loader>
         ) : posts?.length ? (
-          <Transition.Group>
-            {posts?.map((post) => (
-              <Grid.Column key={post.id} style={{ marginBottom: 20 }}>
-                <Post post={post} {...props} />
-              </Grid.Column>
-            ))}
-          </Transition.Group>
+          <>
+            <Transition.Group>
+              {posts?.map((post) => (
+                <Grid.Column key={post.id} style={{ marginBottom: 20 }}>
+                  <Post post={post} {...props} />
+                </Grid.Column>
+              ))}
+            </Transition.Group>
+          </>
         ) : (
           <h1>Nothing to see here...yet.</h1>
         )}

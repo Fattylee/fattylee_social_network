@@ -35,3 +35,10 @@
     box-shadow: 0 1px 3px 0 #2185d0, 0 0 0 1px #2185d0;
   }
 }
+
+div.mic-fat {
+  background: url("https://via.placeholder.com/100");
+  background-size: cover;
+  width: 100%;
+  height: 200px;
+}

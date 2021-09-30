@@ -1,15 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import { UIContext } from "../context/uiContext";
+import { Image } from "semantic-ui-react";
 
 export const FictionPage = () => {
+  const [count, setCount] = useState(0);
   return (
     <UIContext.Consumer>
       {(context) => {
         const { isLightTheme, light, dark, toggleTheme } = context;
-        // console.log(context);
         const { color, bg } = isLightTheme ? light : dark;
         return (
           <>
+            <div className="mic-fat">Hello</div>
+            <h1
+              onClick={(e) => {
+                setCount((count) => count + 1);
+                setCount((count) => count + 1);
+              }}
+            >
+              Count: {count}
+            </h1>
             <form
               action="#"
               onSubmit={(e) => {
@@ -93,6 +103,15 @@ export const FictionPage = () => {
                 </button>
               </header>
             </div>
+            <Image
+              className="lazyload"
+              data-src="/assets/img/sarah.jpg"
+              alt="sarah img"
+            />
+            <Image
+              className="lazyload"
+              data-src="https://via.placeholder.com/100"
+            />
           </>
         );
       }}
