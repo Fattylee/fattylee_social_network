@@ -5,7 +5,6 @@ import { Header } from "./components/Header";
 import { SinglePost } from "./pages/SinglePost";
 import { AuthProvider } from "./context/auth";
 import { AuthRoute } from "./context/AuthRoute";
-import { ProtectedRoute } from "./context/ProtectedRoute";
 import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
 import { NotFound } from "./pages/NotFound";
@@ -25,8 +24,6 @@ const App = () => {
                 <Header />
                 <Switch>
                   <Route exact path="/" component={Home} />
-                  {/* testing only */}
-                  {/* <ProtectedRoute exact path="/posts" component={Home} /> */}
                   <Route exact path="/posts/:postId" component={SinglePost} />
                   <AuthRoute exact path="/login" component={Login} />
                   <AuthRoute exact path="/register" component={Register} />
