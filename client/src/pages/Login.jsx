@@ -13,14 +13,8 @@ const initialValue = {
 };
 
 export const Login = (props) => {
-  const {
-    error,
-    setError,
-    value,
-    setValue,
-    handleSubmit,
-    handleInput,
-  } = useForm(initialValue, handleRegisterUser);
+  const { error, setError, value, setValue, handleSubmit, handleInput } =
+    useForm(initialValue, handleRegisterUser);
   const [togglePassword, setTogglePassword] = useState(false);
 
   const context = useContext(AuthContext);
@@ -50,7 +44,7 @@ export const Login = (props) => {
         <Card raised fluid style={{ maxWidth: 700, margin: "auto" }}>
           <Card.Content>
             <div style={{ textAlign: "center" }}>
-              <Icon name="user" size="huge" textAlign="cente" />
+              <Icon name="user" size="huge" />
             </div>
             <Header textAlign="center" content="Login to Account" size="huge" />
             <Form

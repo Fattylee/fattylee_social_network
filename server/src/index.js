@@ -55,7 +55,7 @@ mongoose
     console.log("Connected to MONGODB");
     app.listen({ port: PORT });
     console.log(
-      `Sever is running: ${JSON.stringify(server.graphqlPath, null, 1)}`
+      `Sever is running: http://localhost:${PORT}${server.graphqlPath}`
     );
   })
   .catch(console.error);

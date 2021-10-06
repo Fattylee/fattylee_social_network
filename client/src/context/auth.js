@@ -18,21 +18,26 @@ const reducer = (state, action) => {
   }
 };
 
-const AuthProvider = (props) => {
-  const [{ user }, dispatch] = useReducer(reducer, null, () => {
-    const initialState = { user: null };
-    const token = localStorage.getItem("jwtToken");
-    if (token) {
-      const decodedToken = decode(token);
-      console.log({ decodedToken, token });
-      if (decodedToken.exp * 1000 < Date.now()) {
-        localStorage.removeItem("jwtToken");
-      } else {
-        initialState.user = decodedToken;
-      }
+const getInitialState = () => {
+  const initialState = { user: null };
+  const token = localStorage.getItem("jwtToken");
+  if (token) {
+    const decodedToken = decode(token);
+    if (!decodedToken) {
+      return initialState;
     }
-    return initialState;
-  });
+    console.log({ decodedToken, now: Date.now() / 1000 });
+    if (decodedToken.exp * 1000 < Date.now()) {
+      localStorage.removeItem("jwtToken");
+    } else {
+      initialState.user = decodedToken;
+    }
+  }
+  return initialState;
+};
+
+const AuthProvider = (props) => {
+  const [{ user }, dispatch] = useReducer(reducer, null, getInitialState);
 
   useEffect(() => {
     if (user) {

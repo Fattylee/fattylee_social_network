@@ -10,9 +10,10 @@
   },
   "scripts": {
     "start": "node server/src",
-    "start:dev": "nodemon server/src -w server -i client",
+    "dev": "concurrently \"yarn:start:*\"",
+    "start:server": "nodemon server/src -w server -i client",
     "start:client": "cd client && yarn start",
-    "start:client:build": "cd client && yarn build"
+    "run:client:build": "cd client && yarn build"
   },
   "keywords": [
     "graphql",
@@ -35,6 +36,7 @@
     "mongoose": "^5.11.10"
   },
   "devDependencies": {
+    "concurrently": "^6.3.0",
     "nodemon": "^2.0.7"
   }
 }
