@@ -1,5 +1,6 @@
 import apolloServer from "apollo-server";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 import { authChecker } from "../../utils/authChecker.js";
 
 import {
@@ -23,6 +24,25 @@ export const userResolver = {
       if (!isValidPassword)
         throw new apolloServer.AuthenticationError("Invalid credentials");
 
+      const accessToken = jwt.sign({ userId: user.id }, "suerscretekey", {
+        expiresIn: "15min",
+      });
+      const refreshToken = jwt.sign(
+        { userId: user.id, count: user.count },
+        "more@ansjdsuerscretekey",
+        {
+          expiresIn: "7d",
+        }
+      );
+
+      res.cookie("access-token", accessToken, {
+        //  maxAge: 1000 * 60 * 15 ,
+        expires: new Date(Date.now() + 1000 * 60 * 15),
+        secure: true,
+      }); //15min
+      res.cookie("refresh-token", refreshToken, {
+        maxAge: 1000 * 60 * 60 * 24 * 7,
+      }); // 7days
       res.cookie("fatty", "loocer".repeat(5), {
         httpOnly: true,
         maxAge: 1000 * 60 * 60 * 24 * 7, //7days
