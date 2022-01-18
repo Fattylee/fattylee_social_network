@@ -42,6 +42,7 @@ export const userResolver = {
       }); //15min
       res.cookie("refresh-token", refreshToken, {
         maxAge: 1000 * 60 * 60 * 24 * 7,
+        secure: process.env?.NODE_ENV === "production",
       }); // 7days
       res.cookie("fatty", "loocer".repeat(5), {
         httpOnly: true,
